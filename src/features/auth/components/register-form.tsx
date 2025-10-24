@@ -25,18 +25,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import { authClient } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
 
 
 const registerSchema = z.object({ 
-  email: z.email("Your e-mail address"),
-  password: z.string().min(1, "Your password"),
+  name: z.string().min(3, "Your full name"),
+  email: z.email("Your best e-mail address"),
+  password: z.string().min(4, "Your password"),
   confirmPassword: z.string(),
 })
 .refine((data) => data.password === data.confirmPassword, { 
   message: "Passwords do not match",
-  path: ["confirmPassword, password"],
+  path: ["confirmPassword"],
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -47,6 +47,7 @@ export function RegisterForm() {
   const form = useForm<RegisterFormValues>({ 
     resolver: zodResolver(registerSchema),
     defaultValues: { 
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -54,7 +55,22 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (values: RegisterFormValues) => { 
-    console.log(values)
+    await authClient.signUp.email(
+      { 
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        callbackURL: "/",
+      },
+      { 
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: (ctx) => { 
+          toast.error(ctx.error.message);
+        }
+      }
+    )
   };
 
   const isPending = form.formState.isSubmitting;
@@ -64,7 +80,7 @@ export function RegisterForm() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle>
-            Get Started!
+            Let's Get Started!
           </CardTitle>
           <CardDescription>
             Create your account to get started
@@ -95,6 +111,23 @@ export function RegisterForm() {
                 <div className="grid gap-8">
                   <FormField 
                     control={form.control}
+                    name="name"
+                    render={({ field }) => ( 
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="string"
+                            placeholder="Your full name"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField 
+                    control={form.control}
                     name="email"
                     render={({ field }) => ( 
                       <FormItem>
@@ -102,7 +135,7 @@ export function RegisterForm() {
                         <FormControl>
                           <Input 
                             type="email"
-                            placeholder="yourname@email.com"
+                            placeholder="Your best e-mail address"
                             {...field}
                           />
                         </FormControl>
@@ -119,7 +152,7 @@ export function RegisterForm() {
                         <FormControl>
                           <Input 
                             type="password"
-                            placeholder="your strong password"
+                            placeholder="Your strong password"
                             {...field}
                           />
                         </FormControl>
@@ -136,7 +169,7 @@ export function RegisterForm() {
                         <FormControl>
                           <Input 
                             type="password"
-                            placeholder="confirm strong password"
+                            placeholder="Confirm password"
                             {...field}
                           />
                         </FormControl>

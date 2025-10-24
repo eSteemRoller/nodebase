@@ -25,13 +25,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import { authClient } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
 
 
 const loginSchema = z.object({ 
-  email: z.email("Your e-mail address"),
-  password: z.string().min(1, "Your password"),
+  email: z.email("Invalid e-mail address"),
+  password: z.string().min(1, "Invalid password"),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -48,7 +47,21 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: LoginFormValues) => { 
-    console.log(values)
+    await authClient.signIn.email(
+      { 
+        email: values.email,
+        password: values.password,
+        callbackURL: '/',
+      },
+      {
+        onSuccess: () => { 
+          router.push('/');
+        },
+        onError: (ctx) => { 
+          toast.error(ctx.error.message);
+        },
+      },
+    );
   };
 
   const isPending = form.formState.isSubmitting;
@@ -58,7 +71,7 @@ export function LoginForm() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle>
-            Welcome back!
+            Welcome Back!
           </CardTitle>
           <CardDescription>
             Login to continue
@@ -96,7 +109,7 @@ export function LoginForm() {
                         <FormControl>
                           <Input 
                             type="email"
-                            placeholder="yourname@email.com"
+                            placeholder="Your e-mail address"
                             {...field}
                           />
                         </FormControl>
@@ -113,7 +126,7 @@ export function LoginForm() {
                         <FormControl>
                           <Input 
                             type="password"
-                            placeholder="your strong password"
+                            placeholder="Your password"
                             {...field}
                           />
                         </FormControl>
