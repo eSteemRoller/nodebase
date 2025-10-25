@@ -156,5 +156,5 @@ export function LoginForm() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 };

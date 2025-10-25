@@ -1,8 +1,11 @@
 
 import { LoginForm } from "@/features/auth/components/login-form";
+import { requireUnauth } from "@/lib/auth-utils";
 
 
-export default function Page() { 
+export async function Page() { 
+  await requireUnauth();
+
   return ( 
     <div>
       <LoginForm />
