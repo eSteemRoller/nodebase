@@ -3,11 +3,23 @@
 
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 
-export function LogoutButton() { 
+export const LogoutButton = () => { 
+  const router = useRouter();
+
   return (
-    <Button onClick={() => authClient.signOut()}>
+    <Button onClick={() => authClient.signOut({ 
+      fetchOptions: { 
+        onSuccess: () => { 
+          router.push('/login');
+        },
+//         onError: (ctx) => {
+// +         console.error('Logout failed:', ctx.error);
+// +       },
+      }
+    })}>
       Logout
     </Button>
   );

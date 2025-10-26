@@ -4,7 +4,7 @@ import { LogoutButton } from "./logout";
 
 
 
-export async function Page() { 
+const Page = async () => { 
   await requireAuth();
 
   const data = await caller.getUsers();
@@ -19,3 +19,5 @@ export async function Page() {
     </div>
   );
 };
+
+export default Page;

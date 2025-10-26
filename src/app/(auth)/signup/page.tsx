@@ -3,7 +3,7 @@ import { RegisterForm } from "@/features/auth/components/register-form";
 import { requireUnauth } from "@/lib/auth-utils";
 
 
-export async function Page() { 
+const Page = async () => { 
   await requireUnauth();
 
   return ( 
@@ -12,3 +12,5 @@ export async function Page() {
     </div>
   );
 };
+
+export default Page;
