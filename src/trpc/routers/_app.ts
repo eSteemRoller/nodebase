@@ -1,22 +1,21 @@
 
 // import { z } from 'zod';
 import prisma from '@/lib/db';
-import { baseProcedure, createTRPCRouter, protectedProcedure } from '../init';
+import { createTRPCRouter, protectedProcedure } from '../init';
 
 
 export const appRouter = createTRPCRouter({
-  getUsers: protectedProcedure
-    // .input(
-    //   z.object({
-    //     text: z.string(),
-    //   }),
-    // )
+  getWorkflows: protectedProcedure
     .query(({ ctx }) => { 
       console.log({ userId: ctx.auth.user.id })
 
-      return prisma.user.findMany({ 
-        where: { 
-          id: ctx.auth.user.id,
+      return prisma.workflow.findMany();
+    }),
+  createWorkflow: protectedProcedure
+    .mutation(() => { 
+      return prisma.workflow.create({ 
+        data: { 
+          name: 'test-workflow'
         },
       });
     }),
