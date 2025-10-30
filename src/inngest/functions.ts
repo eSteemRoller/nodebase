@@ -41,7 +41,7 @@ export const executeAI = inngest.createFunction(
       'anthropic-generate-text', 
       generateText, 
       { 
-        model: anthropic('claude-sonnet-4-5'),
+        model: anthropic('claude-sonnet-4-5-20250929'),
         system: 'You are a helpful assistant.',
         prompt: 'What is 2 + 2?' 
       }
