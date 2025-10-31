@@ -12,7 +12,6 @@ import { TRPCError } from '@trpc/server';
 export const appRouter = createTRPCRouter({ 
   testAI: protectedProcedure
     .mutation(async () => { 
-      throw new TRPCError({ code: "BAD_REQUEST", message: 'Something went wrong' });
 
       await inngest.send({
         name: 'execute/ai',
