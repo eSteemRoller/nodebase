@@ -1,8 +1,19 @@
 import {withSentryConfig} from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
+
 const nextConfig: NextConfig = {
   /* config options here */
+  devIndicators: false,
+  async redirects() {
+    return [
+      { 
+        source: '/',
+        destination: '/workflows', // http://localhost:3000/workflows
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withSentryConfig(nextConfig, {
@@ -11,7 +22,7 @@ export default withSentryConfig(nextConfig, {
 
   org: "dos-dc",
 
-  project: "javascript-nextjs",
+  project: "nodebase",
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,

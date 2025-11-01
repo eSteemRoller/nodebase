@@ -1,7 +1,7 @@
 
 'use client';
 
-import { LogoutButton } from "./logout";
+import { LogoutButton } from "./remove-2";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
