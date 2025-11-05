@@ -1,49 +1,54 @@
 
-// import { z } from 'zod';
+import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
 import prisma from '@/lib/db';
-import { createTRPCRouter, protectedProcedure } from '../init';
-import { inngest } from '@/inngest/client';
-// import { email } from 'zod';
-import { google } from '@ai-sdk/google';
-import { generateText } from 'ai';
+import { generateSlug } from 'random-word-slugs';
 import { TRPCError } from '@trpc/server';
+import z from 'zod';
+import { Input } from '@/components/ui/input';
 
 
-export const appRouter = createTRPCRouter({ 
-  testAI: protectedProcedure
-    .mutation(async () => { 
-
-      await inngest.send({
-        name: 'execute/ai',
-      });
-
-      return { success: true, message: 'Job queued' };
+export const workflowsRouter = createTRPCRouter({ 
+  create: protectedProcedure.mutation(({ ctx }) => { 
+    return prisma.workflow.create({ 
+      data: { 
+        name: generateSlug(3),
+        userId: ctx.auth.user.id,
+      },
+    });
   }),
-  getWorkflows: protectedProcedure
+  remove: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ ctx, input }) => { 
+      return prisma.workflow.delete({ 
+        where: { 
+          id: input.id,
+          userId: ctx.auth.user.id,
+        },
+      });
+  }),
+  updateName: protectedProcedure
+    .input(z.object({ id: z.string(), name: z.string().min(1) }))
+    .mutation(({ ctx, input }) => { 
+      return prisma.workflow.update({ 
+        where: { id: input.id, userId: ctx.auth.user.id },
+        data: { name: input.name },
+      });
+    }),
+  getOne: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => { 
+      return prisma.workflow.findUnique({ 
+        where: { id: input.id, userId: ctx.auth.user.id }
+      });
+    }),
+  getMany: protectedProcedure
     .query(({ ctx }) => { 
-      console.log({ 
-        userId: ctx.auth.user.id 
+      return prisma.workflow.findMany({ 
+        where: { userId: ctx.auth.user.id }
       });
-
-      return prisma.workflow.findMany();
-  }),
-  createWorkflow: protectedProcedure
-    .mutation(async () => { 
-      await inngest.send({ 
-        name: 'test/hello.world',
-        data: { 
-          email: 'JohnD@email.com',
-        },
-      });
-
-      return prisma.workflow.create({ 
-        data: { 
-          name: 'test-workflow'
-        },
-      });
-  }),
+    }),
 });
 
 
 // export type definition of API
-export type AppRouter = typeof appRouter;
+export type workflowsRouter = typeof workflowsRouter;

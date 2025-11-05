@@ -32,7 +32,7 @@ const menuItems = [
     title: 'Main',
     items: [ 
       { 
-        title: 'Workflows',
+        title: 'Workflows (Main)',
         icon: FolderOpenIcon,
         url: '/workflows',
       },
