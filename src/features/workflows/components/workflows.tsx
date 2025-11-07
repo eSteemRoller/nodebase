@@ -3,7 +3,7 @@
 
 import { boolean } from "zod";
 import { useSuspenseWorkflows } from "../hooks/use-workflows"
-import { EntityHeader } from "@/components/entity-components";
+import { EntityContainer, EntityHeader } from "@/components/entity-components";
 
 
 export const WorkflowsList = () => { 
@@ -16,12 +16,12 @@ export const WorkflowsList = () => {
   );
 };
 
-export const WorkflowsHeader = ({ disabled } : { disabled? : boolean }) => { 
+export const WorkflowsHeader = ({ disabled } : { disabled?: boolean }) => { 
   return ( 
     <>
       <EntityHeader 
         title="Workflows"
-        description="Create and Edit you Workflows"
+        description="Create and Edit your Workflows"
         onNew={() => {}}
         newButtonLabel="New Workflow"
         disabled={disabled}
@@ -30,3 +30,19 @@ export const WorkflowsHeader = ({ disabled } : { disabled? : boolean }) => {
     </>
   )
 };
+
+export const WorkflowsContainer = ({ 
+  children
+}: { 
+  children: React.ReactNode;
+}) => { 
+  return ( 
+    <EntityContainer 
+      header={<WorkflowsHeader />}
+      search={<></>}
+      pagination={<></>}
+    >
+      {children}
+    </EntityContainer>
+  )
+}
