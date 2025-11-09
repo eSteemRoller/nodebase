@@ -56,7 +56,7 @@ export const premiumProcedure = protectedProcedure.use(
     ) { 
       throw new TRPCError({ 
         code: 'FORBIDDEN',
-        message: 'Subscription required',
+        message: "Active 'Pro' subscription required",
       });
     }
 

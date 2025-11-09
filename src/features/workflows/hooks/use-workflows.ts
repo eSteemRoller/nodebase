@@ -22,19 +22,20 @@ export const useCreateWorkflow = () => {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
 
-  return useMutation(
-    trpc.workflows.create.mutationOptions({ 
-      onSuccess: (data) => { 
-        toast.success(`New Workflow, ${data.name}, created`);
-        router.push(`/workflows/${data.id}`);
-        queryClient.invalidateQueries( 
-          trpc.workflows.getMany.queryOptions(),
-        );
-      },
-      onError: (error) => { 
-        toast.error(`Failed to create new Workflow: ${error.message}`);
-      },
-    }),
+  return (
+    useMutation(
+      trpc.workflows.create.mutationOptions({ 
+        onSuccess: (data) => { 
+          toast.success(`New Workflow, ${data.name},  has been created`);
+          queryClient.invalidateQueries( 
+            trpc.workflows.getMany.queryOptions(),
+          );
+        },
+        onError: (error) => { 
+          toast.error(`Failed to create new Workflow: ${error.message}`);
+        },
+      }),
+    )
   )
 };
 

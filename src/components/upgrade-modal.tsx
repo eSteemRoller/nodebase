@@ -32,10 +32,10 @@ export const UpgradeModal = ({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Upgrade to Pro
+            <p className='mb-4'>Upgrade account to 'Pro' subscription</p>
             <AlertDialogDescription>
-              An active subsription is required for this action. 
-              Upgrade to Pro to unlock all features.
+              <p>An active 'Pro' subsription is required for this action.</p> 
+              <p className='mb-4'>Upgrade to 'Pro' to unlock all features.</p>
             </AlertDialogDescription>
           </AlertDialogTitle>
         </AlertDialogHeader>

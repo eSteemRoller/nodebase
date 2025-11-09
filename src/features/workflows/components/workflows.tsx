@@ -4,6 +4,8 @@
 import { boolean } from "zod";
 import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows"
 import { EntityContainer, EntityHeader } from "@/components/entity-components";
+import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
+import { useRouter } from "next/navigation";
 
 
 export const WorkflowsList = () => { 
@@ -22,18 +24,23 @@ export const WorkflowsList = () => {
 
 export const WorkflowsHeader = ({ disabled } : { disabled?: boolean }) => { 
   const createWorkflow = useCreateWorkflow();
+  const router = useRouter();
+  const { handleError, modal } = useUpgradeModal();
 
   const handleCreate = () => { 
     createWorkflow.mutate(undefined, { 
+      onSuccess: (data) => { 
+        router.push(`/workflows/${data.id}`);
+      },
       onError: (error) => { 
-        // ToDo: Open upgrade modal
-        console.error(error);
+        handleError(error);
       },
     });
   }
 
   return ( 
     <>
+      {modal}
       <EntityHeader 
         title="Workflows"
         description="Create and Edit your Workflows"
