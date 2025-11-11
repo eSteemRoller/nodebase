@@ -13,6 +13,7 @@ import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import { useRouter } from "next/navigation";
 import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import { UseEntitySearch } from "../hooks/use-entity-search";
+import { Workflow } from "../types";
 
 
 export const WorkflowsSearch = () => { 
@@ -52,7 +53,7 @@ export const WorkflowsHeader = ({ disabled } : { disabled?: boolean }) => {
 
   const handleCreate = () => { 
     createWorkflow.mutate(undefined, { 
-      onSuccess: (data) => { 
+      onSuccess: (data: Workflow) => { 
         router.push(`/workflows/${data.id}`);
       },
       onError: (error) => { 

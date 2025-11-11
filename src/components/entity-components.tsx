@@ -90,7 +90,7 @@ export const EntityContainer = ({
       >
         {header}
         <div className="flex 
-          flex-column 
+          flex-column-reverse 
           gap-y-4 
           h-full"
         >
@@ -116,11 +116,10 @@ export const EntitySearch = ({
 }: EntitySearchProps) => { 
   return ( 
     <div className="relative ml-auto">
-      <SearchIcon className="size-4 
+      <SearchIcon className="size-5 
         absolute 
-        left-4 
-        top-2 
-        -translate-y-2 
+        left-2 
+        top-2.5 
         text-muted-foreground" 
       />
       <Input className="max-w-[200px] 
@@ -129,6 +128,7 @@ export const EntitySearch = ({
         border-border 
         pl-8" 
         placeholder={placeholder} 
+        aria-label={placeholder}
         value={value} 
         onChange={(e) => onChange(e.target.value)}
       />
@@ -175,3 +175,4 @@ export const EntityPagination = ({
     </div>
   )
 }
+
