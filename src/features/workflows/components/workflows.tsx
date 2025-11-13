@@ -7,7 +7,9 @@ import {
   EntityContainer, 
   EntityHeader, 
   EntityPagination, 
-  EntitySearch 
+  EntitySearch, 
+  ErrorView, 
+  LoadingView
 } from "@/components/entity-components";
 import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import { useRouter } from "next/navigation";
@@ -33,6 +35,8 @@ export const WorkflowsSearch = () => {
 };
 
 export const WorkflowsList = () => { 
+  // throw new Error('test')
+
   const workflows = useSuspenseWorkflows();
 
   return ( 
@@ -77,20 +81,6 @@ export const WorkflowsHeader = ({ disabled } : { disabled?: boolean }) => {
   );
 };
 
-export const WorkflowsPagination = () => { 
-  const workflows = useSuspenseWorkflows();
-  const [params, setParams] = useWorkflowsParams();
-
-  return ( 
-    <EntityPagination 
-      disabled={workflows.isFetching}
-      totalPages={workflows.data.totalPages}
-      page={workflows.data.page}
-      onPageChange={(page) => setParams({ ...params, page })}
-    />
-  );
-};
-
 export const WorkflowsContainer = ({ 
   children
 }: { 
@@ -105,4 +95,26 @@ export const WorkflowsContainer = ({
       {children}
     </EntityContainer>
   );
+};
+
+export const WorkflowsPagination = () => { 
+  const workflows = useSuspenseWorkflows();
+  const [params, setParams] = useWorkflowsParams();
+
+  return ( 
+    <EntityPagination 
+      disabled={workflows.isFetching}
+      totalPages={workflows.data.totalPages}
+      page={workflows.data.page}
+      onPageChange={(page) => setParams({ ...params, page })}
+    />
+  );
+};
+
+export const WorkflowsLoading = () => { 
+  return <LoadingView message="Loading Workflows..." />;
+};
+
+export const WorkflowsError = () => { 
+  return <ErrorView message="Error loading Workflows..." />;
 };

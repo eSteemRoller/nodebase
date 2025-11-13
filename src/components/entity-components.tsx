@@ -1,4 +1,4 @@
-import { Loader2Icon, PlusIcon, SearchIcon } from "lucide-react";
+import { AlertTriangleIcon, Loader2Icon, PlusIcon, SearchIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Input } from "./ui/input";
@@ -66,7 +66,7 @@ type EntityContainerProps = {
   header?: React.ReactNode;
   search?: React.ReactNode;
   pagination?: React.ReactNode;
-}
+};
 
 export const EntityContainer = ({ 
   children,
@@ -90,7 +90,7 @@ export const EntityContainer = ({
       >
         {header}
         <div className="flex 
-          flex-column-reverse 
+          flex-col 
           gap-y-4 
           h-full"
         >
@@ -181,14 +181,9 @@ interface StateViewProps {
   message?: string;
 };
 
-interface LoadingViewProps extends StateViewProps { 
-  entity?: string;
-};
-
 export const LoadingView = ({ 
-  entity = 'items',
   message,
-}: LoadingViewProps) => { 
+}: StateViewProps) => { 
   return ( 
     <div className="flex 
       justify-center 
@@ -198,10 +193,34 @@ export const LoadingView = ({
       flex-col 
       gap-y-4"
     >
-      <Loader2Icon className="size-6 animate-spin text-muted-foreground" />
-      <p className="text-sm text-muted-foreground">
-        {message || `Loading ${entity}...`}
-      </p>
+      <Loader2Icon className="size-8 animate-spin text-primary" />
+      {!!message && (
+        <p className="text-sm text-muted-foreground">
+          {message}
+        </p>
+      )}
+    </div>
+  );
+};
+
+export const ErrorView = ({ 
+  message,
+}: StateViewProps) => { 
+  return ( 
+    <div className="flex 
+      justify-center 
+      items-center 
+      h-full 
+      flex-1 
+      flex-col 
+      gap-y-4"
+    >
+      <AlertTriangleIcon className="size-8 animate-pulse text-primary" />
+      {!!message && (
+        <p className="text-sm text-muted-foreground">
+          {message}
+        </p>
+      )}
     </div>
   );
 };
