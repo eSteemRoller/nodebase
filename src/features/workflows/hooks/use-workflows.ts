@@ -5,7 +5,7 @@ import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-q
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useWorkflowsParams } from "./use-workflows-params";
-import { Workflow, WorkflowsResponse } from "../types";
+import { Workflow, WorkflowsAll } from "../types";
 
 
 /*
@@ -14,8 +14,9 @@ import { Workflow, WorkflowsResponse } from "../types";
 export const useSuspenseWorkflows = () => { 
   const trpc = useTRPC();
   const [params] = useWorkflowsParams();
+  const allWorkflows = useSuspenseQuery<WorkflowsAll>(trpc.workflows.getMany.queryOptions(params));
 
-  return useSuspenseQuery<WorkflowsResponse>(trpc.workflows.getMany.queryOptions(params));
+  return allWorkflows;
 };
 
 /*

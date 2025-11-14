@@ -4,8 +4,11 @@
 import { boolean } from "zod";
 import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows"
 import { 
+  EmptyView,
   EntityContainer, 
   EntityHeader, 
+  EntityItem, 
+  EntityList, 
   EntityPagination, 
   EntitySearch, 
   ErrorView, 
@@ -15,7 +18,9 @@ import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import { useRouter } from "next/navigation";
 import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import { UseEntitySearch } from "../hooks/use-entity-search";
-import { Workflow } from "../types";
+import type { Workflow } from "@/generated/prisma";
+import { WorkflowIcon } from "lucide-react";
+import { WorkflowData, WorkflowsAll } from "../types";
 
 
 export const WorkflowsSearch = () => { 
@@ -40,13 +45,12 @@ export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
 
   return ( 
-    <div className="flex-1 
-      flex justify-center items-center"
-    >
-      <p>
-        {JSON.stringify(workflows.data, null, 2)}
-      </p>
-    </div>
+    <EntityList 
+      items={workflows.data.items}
+      getKey={(workflow: WorkflowData) => workflow.id}
+      renderItem={(workflow: WorkflowData) => <WorkflowItem data={workflow} />}
+      emptyView={<WorkflowsEmpty />}
+    />
   );
 };
 
@@ -57,7 +61,7 @@ export const WorkflowsHeader = ({ disabled } : { disabled?: boolean }) => {
 
   const handleCreate = () => { 
     createWorkflow.mutate(undefined, { 
-      onSuccess: (data: Workflow) => { 
+      onSuccess: (data: WorkflowData) => { 
         router.push(`/workflows/${data.id}`);
       },
       onError: (error) => { 
@@ -118,3 +122,59 @@ export const WorkflowsLoading = () => {
 export const WorkflowsError = () => { 
   return <ErrorView message="Error loading Workflows..." />;
 };
+
+export const WorkflowsEmpty = () => { 
+  const createWorkflow = useCreateWorkflow();
+  const router = useRouter();
+  const { handleError, modal } = useUpgradeModal();
+
+  const handleCreate = () => { 
+    createWorkflow.mutate(undefined, { 
+      onSuccess: (data: WorkflowData) => { 
+        router.push(`/workflows/${data.id}`);
+      },
+      onError: (error) => { 
+        handleError(error);
+      },
+    });
+  };
+
+  return ( 
+    <>
+      {modal}
+      <EmptyView 
+        onNew={handleCreate}
+        message="No Workflows found or Created yet. 
+          Create your first Workflow or adjust your Search."
+      />
+    </>
+  );
+};
+
+export const WorkflowItem = ({ 
+  data,
+
+}: { 
+    data: Workflow 
+  }) => { 
+    return ( 
+      <EntityItem 
+        href={`/workflows/${data.id}`}
+        title={data.name}
+        subtitle={ 
+          <>
+            Updated TODO{" "}
+            &bull; Created{" "}
+            TODO
+          </>
+        }
+        image={ 
+          <div className="size-8 flex justify-center items-center">
+            <WorkflowIcon className="size=5 text-muted-foreground" />
+          </div>
+        }
+        onRemove={() => {}}
+        isRemoving={false}
+      />
+    )
+}

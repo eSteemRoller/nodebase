@@ -1,5 +1,5 @@
 
-export interface Workflow {
+export interface WorkflowData {
   id: string;
   name: string;
   createdAt: Date;
@@ -7,8 +7,9 @@ export interface Workflow {
   userId: string;
 }
 
-export interface WorkflowsResponse {
-  data: Workflow[];
+export interface WorkflowsAll {
+  items: any;
+  data: WorkflowData[];
   page: number;
   pageSize: number;
   totalCount: number;
