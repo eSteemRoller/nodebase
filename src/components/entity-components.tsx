@@ -362,11 +362,13 @@ export const EntityItem = ({
   };
 
   return ( 
-    <Link href={href} prefetch>
+    <Link href={href} prefetch
+    >
       <Card
         className={cn( 
           'p-4 shadow-none hover:shadow cursor-pointer',
           isRemoving && 'opacity-50 cursor-not-allowed',
+          isRemoving && 'pointer-events-none',
           className,
         )}
       >

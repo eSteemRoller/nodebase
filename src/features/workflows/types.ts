@@ -8,7 +8,7 @@ export interface WorkflowData {
 }
 
 export interface WorkflowsAll {
-  items: any;
+  items: unknown;  // or better: use a specific type  
   data: WorkflowData[];
   page: number;
   pageSize: number;

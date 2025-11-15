@@ -1,8 +1,8 @@
 
 'use client';
 
-import { boolean } from "zod";
-import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows"
+import { formatDistanceToNow } from 'date-fns';
+import { useCreateWorkflow, useRemoveWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows"
 import { 
   EmptyView,
   EntityContainer, 
@@ -20,7 +20,7 @@ import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import { UseEntitySearch } from "../hooks/use-entity-search";
 import type { Workflow } from "@/generated/prisma";
 import { WorkflowIcon } from "lucide-react";
-import { WorkflowData, WorkflowsAll } from "../types";
+// import { WorkflowData, WorkflowsAll } from "../types";
 
 
 export const WorkflowsSearch = () => { 
@@ -47,8 +47,8 @@ export const WorkflowsList = () => {
   return ( 
     <EntityList 
       items={workflows.data.items}
-      getKey={(workflow: WorkflowData) => workflow.id}
-      renderItem={(workflow: WorkflowData) => <WorkflowItem data={workflow} />}
+      getKey={(workflow) => workflow.id}
+      renderItem={(workflow) => <WorkflowItem data={workflow} />}
       emptyView={<WorkflowsEmpty />}
     />
   );
@@ -61,7 +61,7 @@ export const WorkflowsHeader = ({ disabled } : { disabled?: boolean }) => {
 
   const handleCreate = () => { 
     createWorkflow.mutate(undefined, { 
-      onSuccess: (data: WorkflowData) => { 
+      onSuccess: (data) => { 
         router.push(`/workflows/${data.id}`);
       },
       onError: (error) => { 
@@ -130,7 +130,7 @@ export const WorkflowsEmpty = () => {
 
   const handleCreate = () => { 
     createWorkflow.mutate(undefined, { 
-      onSuccess: (data: WorkflowData) => { 
+      onSuccess: (data) => { 
         router.push(`/workflows/${data.id}`);
       },
       onError: (error) => { 
@@ -157,24 +157,30 @@ export const WorkflowItem = ({
 }: { 
     data: Workflow 
   }) => { 
-    return ( 
-      <EntityItem 
-        href={`/workflows/${data.id}`}
-        title={data.name}
-        subtitle={ 
-          <>
-            Updated TODO{" "}
-            &bull; Created{" "}
-            TODO
-          </>
-        }
-        image={ 
-          <div className="size-8 flex justify-center items-center">
-            <WorkflowIcon className="size=5 text-muted-foreground" />
-          </div>
-        }
-        onRemove={() => {}}
-        isRemoving={false}
-      />
-    )
+    const removeWorkflow = useRemoveWorkflow();
+
+    const handleRemove = () => { 
+      removeWorkflow.mutate({ id: data.id });
+    }
+
+  return ( 
+    <EntityItem 
+      href={`/workflows/${data.id}`}
+      title={data.name}
+      subtitle={ 
+        <>
+          Updated {formatDistanceToNow(data.updatedAt, { addSuffix: true })}{" "}
+          &bull; Created{" "}
+          {formatDistanceToNow(data.createdAt, { addSuffix: true })}
+        </>
+      }
+      image={ 
+        <div className="size-8 flex justify-center items-center">
+          <WorkflowIcon className="size-5 text-muted-foreground" />
+        </div>
+      }
+      onRemove={handleRemove}
+      isRemoving={removeWorkflow.isPending}
+    />
+  )
 }
