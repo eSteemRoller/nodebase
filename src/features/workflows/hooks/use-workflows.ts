@@ -41,7 +41,7 @@ export const useCreateWorkflow = () => {
 };
 
 /*
-** Hook to remove a Workflow
+** Hook to delete a Workflow
 */
 export const useRemoveWorkflow = () => { 
   const trpc = useTRPC();
@@ -60,5 +60,14 @@ export const useRemoveWorkflow = () => {
       },
     }),
   )
+};
+
+/*
+** Hook to fetch a Workflow using Suspense
+*/
+export const useSuspenseWorkflow = (id: string) => { 
+  const trpc = useTRPC();
+
+  return useSuspenseQuery(trpc.workflows.getOne.queryOptions({ id }));
 };
 

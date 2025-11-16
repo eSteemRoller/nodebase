@@ -1,7 +1,7 @@
 
 import { PAGINATION } from "@/config/constants";
 import prisma from "@/lib/db";
-import { createTRPCRouter, premiumProcedure, protectedProcedure } from "@/trpc/init";
+import { createTRPCRouter, protectedProcedure, premiumProcedure } from "@/trpc/init";
 import { generateSlug } from 'random-word-slugs';
 import z from 'zod';
 
