@@ -34,7 +34,7 @@ export const useCreateWorkflow = () => {
         );
       },
       onError: (error) => { 
-        toast.error(`Failed to create new Workflow, "${error.message}"`);
+        toast.error(`Failed to create Workflow: ${error.message}`);
       },
     }),
   )
@@ -48,7 +48,7 @@ export const useRemoveWorkflow = () => {
   const queryClient = useQueryClient();
 
   return useMutation( 
-    trpc.workflows.remove.mutationOptions({ 
+    trpc.workflows.delete.mutationOptions({ 
       onSuccess: (data) => { 
         toast.success(`Workflow, "${data.name}," has been deleted`); 
         queryClient.invalidateQueries( 
@@ -56,7 +56,7 @@ export const useRemoveWorkflow = () => {
         );
       },
       onError: (error) => { 
-        toast.error(`Failed to delete Workflow, "${error.message}"`);
+        toast.error(`Failed to delete Workflow: ${error.message}`);
       },
     }),
   )
@@ -71,3 +71,24 @@ export const useSuspenseWorkflow = (id: string) => {
   return useSuspenseQuery(trpc.workflows.getOne.queryOptions({ id }));
 };
 
+/*
+** Hook to rename the current Workflow
+*/
+export const useRenameWorkflow = () => { // aka useUpdateWorkflowName
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    trpc.workflows.updateWorkflowName.mutationOptions({  // aka updateName
+      onSuccess: (data) => { 
+        toast.success(`Workflow renamed to "${data.name}."`); 
+        queryClient.invalidateQueries( 
+          trpc.workflows.getOne.queryOptions({ id: data.id }),
+        );
+      },
+      onError: (error) => { 
+        toast.error(`Failed to rename Workflow: ${error.message}`);
+      },
+    }),
+  )
+};

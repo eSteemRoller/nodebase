@@ -2,6 +2,7 @@
 import { PAGINATION } from "@/config/constants";
 import prisma from "@/lib/db";
 import { createTRPCRouter, protectedProcedure, premiumProcedure } from "@/trpc/init";
+import { TRPCError } from "@trpc/server";
 import { generateSlug } from 'random-word-slugs';
 import z from 'zod';
 
@@ -16,7 +17,7 @@ export const workflowsRouter = createTRPCRouter({
         },
       });
   }),
-  remove: protectedProcedure
+  delete: protectedProcedure  // aka remove
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => { 
       return prisma.workflow.delete({ 
@@ -26,7 +27,7 @@ export const workflowsRouter = createTRPCRouter({
         },
       });
   }),
-  updateName: protectedProcedure
+  updateWorkflowName: protectedProcedure  // aka updateName
     .input(z.object({ id: z.string(), name: z.string().min(1) }))
     .mutation(({ ctx, input }) => { 
       return prisma.workflow.update({ 
@@ -37,7 +38,7 @@ export const workflowsRouter = createTRPCRouter({
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => { 
-      return prisma.workflow.findUnique({ 
+      return prisma.workflow.findUniqueOrThrow({  // throws error if Workflow is not found (null)
         where: { id: input.id, userId: ctx.auth.user.id }
       });
   }),
