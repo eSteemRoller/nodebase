@@ -43,10 +43,63 @@ export const EditorWorkflowNameInput = ({ workflowId }: { workflowId: string }) 
     if (workflow.name) { 
       setName(workflow.name);
     }
-  }, []);
+  }, [workflow.name]);
 
+  useEffect(() => { 
+    if (isEditing && inputRef.current) { 
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
+
+  const handleSave = async () => { 
+    if (name === workflow.name) { 
+      setIsEditing(false);
+      return;
+    }
+
+    try { 
+      await renameWorkflow.mutateAsync({ 
+        id: workflowId,
+        name,
+      })
+    } catch { 
+      setName(workflow.name)
+    } finally { 
+      setIsEditing(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => { 
+    if (e.key === 'Enter') { 
+      handleSave();
+    } else if (e.key === 'Escape') { 
+      setName(workflow.name);
+      setIsEditing(false);
+    }
+  };
+
+  if (isEditing) { 
+    return ( 
+      <Input 
+        disabled={renameWorkflow.isPending}
+        ref={inputRef}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onBlur={handleSave}  // ... what does it do?
+        onKeyDown={handleKeyDown}
+        className="h-8 w-auto min-w-[120px] px-2"
+      />
+    )
+  }
   return ( 
-    <BreadcrumbItem className="cursor-pointer hover:text-foreground transition-colors hover:underline">
+    <BreadcrumbItem 
+      onClick={() => setIsEditing(true)} 
+      className="cursor-pointer 
+        hover:text-foreground 
+        hover:underline 
+        transition-colors"
+    >
       {workflow.name}
     </BreadcrumbItem>
   )
@@ -57,8 +110,8 @@ export const EditorBreadcrumbs = ({ workflowId }: { workflowId: string }) => {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild className="hover:underline">
-            <Link prefetch href='/workflows'>
+          <BreadcrumbLink asChild>
+            <Link prefetch href='/workflows' className="hover:underline">
               Workflows
             </Link>
           </BreadcrumbLink>
