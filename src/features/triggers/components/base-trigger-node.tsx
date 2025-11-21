@@ -5,12 +5,12 @@ import { type NodeProps, Position } from '@xyflow/react';
 import type { LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import { memo, type ReactNode } from 'react';
-import { BaseNode, BaseNodeContent } from './react-flow/base-node';
-import { BaseHandle } from './react-flow/base-handle';
-import { WorkflowNode } from './workflow-node';
+import { BaseNode, BaseNodeContent } from '../../../components/react-flow/base-node';
+import { BaseHandle } from '../../../components/react-flow/base-handle';
+import { WorkflowNode } from '../../../components/workflow-node';
 
 
-interface BaseExecutionNodeProps extends NodeProps { 
+interface BaseTriggerNodeProps extends NodeProps { 
   icon: LucideIcon | string;
   name: string;
   description?: string;
@@ -20,7 +20,7 @@ interface BaseExecutionNodeProps extends NodeProps {
   onDoubleClick?: () => void;
 };
 
-export const BaseExecutionNode = memo( 
+export const BaseTriggerNode = memo( 
   ({ 
     id,
     icon: Icon,
@@ -29,8 +29,8 @@ export const BaseExecutionNode = memo(
     children,
     onSettings,
     onDoubleClick
-  }: BaseExecutionNodeProps) => { 
-    // To do: add delete method
+  }: BaseTriggerNodeProps) => { 
+    // TO DO: add delete method
     const handleDelete = () => {};
 
     return ( 
@@ -40,19 +40,23 @@ export const BaseExecutionNode = memo(
         onDelete={handleDelete}
         onSettings={onSettings}
       >
-        <BaseNode onDoubleClick={onDoubleClick}>
+        {/* TO DO: wrap within NodeStatusIndicator */}
+        <BaseNode 
+          onDoubleClick={onDoubleClick} 
+          className='rounded-l-2xl relative group'
+        >
           <BaseNodeContent> 
             {typeof Icon === 'string' ? ( 
-              <Image src={Icon} alt={name} width={16} height={16} />
+              <Image 
+                src={Icon} 
+                alt={name} 
+                width={16} 
+                height={16} 
+              />
             ) : ( 
               <Icon className='size-4 text-muted-foreground' />
             )}
             {children}
-            <BaseHandle 
-              id='target-1'
-              type='target'
-              position={Position.Left}
-            />
             <BaseHandle 
               id='source-1'
               type='source'
@@ -65,4 +69,4 @@ export const BaseExecutionNode = memo(
   },
 );
 
-BaseExecutionNode.displayName = "BaseExecutionNode";
+BaseTriggerNode.displayName = "BaseTriggerNode";
