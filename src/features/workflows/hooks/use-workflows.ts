@@ -37,7 +37,7 @@ export const useCreateWorkflow = () => {
         toast.error(`Failed to create Workflow: ${error.message}`);
       },
     }),
-  )
+  );
 };
 
 /*
@@ -59,7 +59,7 @@ export const useRemoveWorkflow = () => {
         toast.error(`Failed to delete Workflow: ${error.message}`);
       },
     }),
-  )
+  );
 };
 
 /*
@@ -72,14 +72,14 @@ export const useSuspenseWorkflow = (id: string) => {
 };
 
 /*
-** Hook to rename the current Workflow
+** Hook to update/rename the current Workflow
 */
 export const useRenameWorkflow = () => { // aka useUpdateWorkflowName
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
   return useMutation(
-    trpc.workflows.updateWorkflowName.mutationOptions({  // aka updateName
+    trpc.workflows.updateWorkflowName.mutationOptions({  // aka workflows.updateName
       onSuccess: (data) => { 
         toast.success(`Workflow renamed to "${data.name}."`); 
         queryClient.invalidateQueries( 
@@ -90,5 +90,27 @@ export const useRenameWorkflow = () => { // aka useUpdateWorkflowName
         toast.error(`Failed to rename Workflow: ${error.message}`);
       },
     }),
-  )
+  );
+};
+
+/*
+** Hook to update the current Workflow
+*/
+export const useUpdateWorkflow = () => { 
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    trpc.workflows.updateWorkflow.mutationOptions({  // aka workflows.update
+      onSuccess: (data) => { 
+        toast.success(`Workflow "${data.name} saved."`); 
+        queryClient.invalidateQueries( 
+          trpc.workflows.getOne.queryOptions({ id: data.id }),
+        );
+      },
+      onError: (error) => { 
+        toast.error(`Failed to save Workflow: ${error.message}`);
+      },
+    }),
+  );
 };

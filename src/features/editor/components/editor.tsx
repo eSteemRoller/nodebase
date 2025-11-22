@@ -23,6 +23,8 @@ import {
 import '@xyflow/react/dist/style.css'; 
 import { nodeComponents } from "@/config/node-components";
 import { AddNodeButton } from "./add-node-button";
+import { useSetAtom } from "jotai";
+import { editorAtom } from "../store/atoms";
 // ReactFlow end
 
 export const EditorLoading = () => { 
@@ -35,6 +37,9 @@ export const EditorError = () => {
 
 export const Editor = ({ workflowId }: { workflowId: string }) => { 
   const { data: workflow } = useSuspenseWorkflow(workflowId);
+
+  // Jotai
+  const setEditor = useSetAtom(editorAtom);
 
   // ReactFlow begin:
   const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
@@ -62,7 +67,12 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeComponents}
+        onInit={setEditor}
         fitView
+        snapGrid={[10, 10]}
+        snapToGrid
+        panOnDrag={false}
+        selectionOnDrag
         // proOptions={{hideAttribution:true}}
       >
         <Background />
@@ -75,4 +85,4 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
     </div>
   );
 };
-// ReactFlow end
+// ReactFlow end.
