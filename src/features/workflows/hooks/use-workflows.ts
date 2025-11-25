@@ -63,7 +63,7 @@ export const useRemoveWorkflow = () => {
 };
 
 /*
-** Hook to fetch a Workflow using Suspense
+** Hook to fetch a Workflow by id using Suspense
 */
 export const useSuspenseWorkflow = (id: string) => { 
   const trpc = useTRPC();
@@ -110,6 +110,24 @@ export const useUpdateWorkflow = () => {
       },
       onError: (error) => { 
         toast.error(`Failed to save Workflow: ${error.message}`);
+      },
+    }),
+  );
+};
+
+/*
+** Hook to execute the current Workflow
+*/
+export const useExecuteWorkflow = () => { 
+  const trpc = useTRPC();
+
+  return useMutation(
+    trpc.workflows.executeWorkflow.mutationOptions({  // aka workflows.execute
+      onSuccess: (data) => { 
+        toast.success(`Workflow "${data.name}" executed.`); 
+      },
+      onError: (error) => { 
+        toast.error(`Failed to execute Workflow: "${error.message}"`);
       },
     }),
   );
