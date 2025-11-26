@@ -4,7 +4,6 @@ import { TRPCClientError } from "@trpc/client";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useWorkflowsParams } from "./use-workflows-params";
-// import { Workflow, WorkflowsAll } from "../types";
 
 
 /*
@@ -103,7 +102,7 @@ export const useUpdateWorkflow = () => {
   return useMutation(
     trpc.workflows.updateWorkflow.mutationOptions({  // aka workflows.update
       onSuccess: (data) => { 
-        toast.success(`Workflow "${data.name} saved."`); 
+        toast.success(`Workflow "${data.name}" saved.`); 
         queryClient.invalidateQueries( 
           trpc.workflows.getOne.queryOptions({ id: data.id }),
         );
@@ -127,7 +126,7 @@ export const useExecuteWorkflow = () => {
         toast.success(`Workflow "${data.name}" executed.`); 
       },
       onError: (error) => { 
-        toast.error(`Failed to execute Workflow: "${error.message}"`);
+        toast.error(`Failed to execute Workflow: ${error.message}`);
       },
     }),
   );

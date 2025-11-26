@@ -23,7 +23,7 @@ export const workflowsRouter = createTRPCRouter({
       });
 
       await inngest.send({ 
-        name: 'workflows/executeWorkflow.workflow',
+        name: 'workflows/execute.workflow',
         data: { workflowId: input.id },
       });
 
