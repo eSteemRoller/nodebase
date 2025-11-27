@@ -1,0 +1,49 @@
+npm verbose cli C:\Program Files\nodejs\node.exe C:\Users\jason\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+npm info using npm@11.6.3
+npm info using node@v22.20.0
+npm silly config load:file:C:\Users\jason\AppData\Roaming\npm\node_modules\npm\npmrc
+npm silly config load:file:C:\Users\jason\Desktop\FES\Module 6 - Building Big Tech\n8-zape-clone\.npmrc
+npm silly config load:file:C:\Users\jason\.npmrc
+npm silly config load:file:C:\Users\jason\AppData\Roaming\npm\etc\npmrc
+npm verbose title npm install
+npm verbose argv "install" "--loglevel" "silly"
+npm verbose logfile logs-max:10 dir:C:\Users\jason\AppData\Local\npm-cache\_logs\2025-11-27T04_56_43_316Z-
+npm verbose logfile C:\Users\jason\AppData\Local\npm-cache\_logs\2025-11-27T04_56_43_316Z-debug-0.log
+npm silly logfile start cleaning logs, removing 1 files
+npm silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+npm silly logfile done cleaning log files
+npm silly Conflicting override sets <ref *1> OverrideSet {
+npm silly Conflicting override sets   parent: undefined,
+npm silly Conflicting override sets   children: Map(1) {
+npm silly Conflicting override sets     'require-in-the-middle' => OverrideSet {
+npm silly Conflicting override sets       parent: [Circular *1],
+npm silly Conflicting override sets       children: Map(0) {},
+npm silly Conflicting override sets       name: 'require-in-the-middle',
+npm silly Conflicting override sets       key: 'require-in-the-middle',
+npm silly Conflicting override sets       keySpec: '*',
+npm silly Conflicting override sets       value: '8.0.1'
+npm silly Conflicting override sets     }
+npm silly Conflicting override sets   }
+npm silly Conflicting override sets } undefined
+npm verbose stack TypeError: Cannot read properties of undefined (reading 'ruleset')
+npm verbose stack     at OverrideSet.haveConflictingRules (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\override-set.js:220:32)
+npm verbose stack     at OverrideSet.doOverrideSetsConflict (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\override-set.js:214:17)
+npm verbose stack     at get error (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\edge.js:278:74)
+npm verbose stack     at get valid (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\edge.js:251:18)
+npm verbose stack     at visit (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:342:71)
+npm verbose stack     at visitNode (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\treeverse\lib\depth-descent.js:58:25)
+npm verbose stack     at next (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\treeverse\lib\depth-descent.js:44:19)
+npm verbose stack     at depth (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\treeverse\lib\depth-descent.js:83:10)
+npm verbose stack     at depth (C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\treeverse\lib\depth.js:27:12)
+npm verbose stack     at C:\Users\jason\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:330:9
+npm error Cannot read properties of undefined (reading 'ruleset')
+npm silly unfinished npm timer reify 1764219403561
+npm silly unfinished npm timer reify:loadTrees 1764219403562
+npm silly unfinished npm timer idealTree:init 1764219403562
+npm verbose cwd C:\Users\jason\Desktop\FES\Module 6 - Building Big Tech\n8-zape-clone
+npm verbose os Windows_NT 10.0.26100
+npm verbose node v22.20.0
+npm verbose npm  v11.6.3
+npm verbose exit 1
+npm verbose code 1
+npm error A complete log of this run can be found in: C:\Users\jason\AppData\Local\npm-cache\_logs\2025-11-27T04_56_43_316Z-debug-0.log
