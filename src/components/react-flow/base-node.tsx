@@ -1,4 +1,5 @@
-import type { ComponentProps, HTMLAttributes } from "react";
+import React, { forwardRef } from "react";
+import type { ComponentProps, HTMLAttributes, ForwardedRef } from "react";
 
 import { cn } from "@/lib/utils";
 import { NodeStatus } from "./node-status-indicator";
@@ -7,11 +8,15 @@ import { CheckCircle2Icon, Loader2Icon, XCircleIcon } from "lucide-react";
 
 interface BaseNodeProps extends HTMLAttributes<HTMLDivElement> { 
   status?: NodeStatus;
-};
+}
 
-export function BaseNode({ className, status, ...props }: BaseNodeProps) {
+export const BaseNode = forwardRef(function BaseNode(
+  { className, status, ...props }: BaseNodeProps,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
   return (
     <div
+      ref={ref}
       className={cn(
         "bg-card text-card-foreground hover:bg-accent relative rounded-sm border border-muted-foreground",
         // React Flow displays node elements inside of a `NodeWrapper` component,
@@ -27,40 +32,24 @@ export function BaseNode({ className, status, ...props }: BaseNodeProps) {
       {...props}
     >
       {props.children}
-      {status === 'error' && ( 
-        <XCircleIcon 
-          className='absolute 
-            right-0.5 
-            bottom-0.5 
-            size-2 
-            text-red-700 
-            stroke-3' 
+      {status === 'error' && (
+        <XCircleIcon
+          className="absolute right-0.5 bottom-0.5 size-2 text-red-700 stroke-3"
         />
       )}
-      {status === 'success' && ( 
-        <CheckCircle2Icon 
-          className='absolute 
-            right-0.5 
-            bottom-0.5 
-            size-2 
-            text-green-700 
-            stroke-3' 
+      {status === 'success' && (
+        <CheckCircle2Icon
+          className="absolute right-0.5 bottom-0.5 size-2 text-green-700 stroke-3"
         />
       )}
-      {status === 'loading' && ( 
-        <Loader2Icon 
-          className='absolute 
-            -right-0.5 
-            -bottom-0.5 
-            size-2 
-            text-blue-700 
-            stroke-3
-            animate-spin' 
+      {status === 'loading' && (
+        <Loader2Icon
+          className="absolute -right-0.5 -bottom-0.5 size-2 text-blue-700 stroke-3 animate-spin"
         />
       )}
     </div>
   );
-}
+});
 
 /**
  * A container for a consistent header layout intended to be used inside the
