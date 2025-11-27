@@ -9,6 +9,7 @@ import { HttpRequestFormValues, HttpRequestDialog } from './dialog';
 
 
 type HttpRequestNodeData = { 
+  variableName?: string;
   endpoint?: string;
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: string;
@@ -42,10 +43,12 @@ export const HttpRequestNode = memo(
   };
   
   const nodeData = props.data;
-  const description = nodeData?.endpoint
+  const descriptionName = nodeData?.variableName
+    ? `Name: ${nodeData.variableName}`
+    : "Unnamed";
+  const descriptionMethod = nodeData?.endpoint  // aka const description
     ? `${nodeData.method || 'GET'}: ${nodeData.endpoint}`
     : "Not configured";
-
   
 
   return ( 
@@ -62,7 +65,7 @@ export const HttpRequestNode = memo(
         icon={GlobeIcon}
         name="HTTP Request"
         status={nodeStatus}
-        description={description}
+        description={descriptionName && descriptionMethod}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
       />

@@ -5,6 +5,7 @@ import ky, { type Options as KyOptions } from 'ky';
 
 
 type HttpRequestData = { 
+  variableName?: string;
   endpoint?: string;
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: string;
@@ -18,10 +19,15 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
 }) => { 
   // To Do: Publish 'loading' state for http request
 
+  if (!data.variableName) { 
+    // To Do: Publish 'error' state for http request
+    throw new NonRetriableError("HTTP Request node: No Variable Name configured.");
+  };
+
   if (!data.endpoint) { 
     // To Do: Publish 'error' state for http request
     throw new NonRetriableError("HTTP Request node: No endpoint configured.");
-  }
+  };
 
   const result = await step.run('http-request', async () => { 
     const endpoint = data.endpoint!;
@@ -30,7 +36,10 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
     const options: KyOptions = { method };
 
     if (['POST', 'PUT', 'PATCH'].includes(method)) { 
-        options.body = data.body;
+      options.headers = { 
+        'Content-Type': 'application/json',
+      };
+      options.body = data.body;
     }
 
     const response = await ky(endpoint, options);
@@ -39,14 +48,26 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
       ? await response.json()
       : await response.text();
 
-    return {
-      ...context,
+    const responsePayload = { 
       httpResponse: { 
         status: response.status,
         statusText: response.statusText,
         data: responseData,
-      }
-    }
+      },
+    };
+
+    if (data.variableName) { 
+      return {
+        ...context,
+        [data.variableName]: responsePayload,
+      };
+    };
+
+    // Fallback to direct httpResponse for backward compatibility
+    return { 
+      ...context,
+      ...responsePayload,
+    };
   });
 
   // const result = await step.fetch(data.endpoint);

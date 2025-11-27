@@ -9,7 +9,7 @@ import { getExecutor } from "@/features/executions/lib/executor-registry";
 
 export const executeWorkflow = inngest.createFunction(
   { id: 'execute-workflow' },
-  { event: 'workflows/workflow.workflow' },
+  { event: 'workflows/executeWorkflow.workflow' },
   async ({ event, step }) => { 
     const workflowId = event.data.workflowId;
 
