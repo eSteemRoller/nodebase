@@ -65,7 +65,7 @@ export const HttpRequestNode = memo(
         icon={GlobeIcon}
         name="HTTP Request"
         status={nodeStatus}
-        description={descriptionName && descriptionMethod}
+        description={descriptionMethod} // {descriptionName}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
       />
