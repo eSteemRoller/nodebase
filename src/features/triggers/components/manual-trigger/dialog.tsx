@@ -24,15 +24,15 @@ export const ManualTriggerDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Manual Trigger
+            Manual Workflow Execution Trigger Configuration
           </DialogTitle>
           <DialogDescription>
-            Configure settings for the manual trigger node.
+            Configure settings for this manual trigger
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
           <p className='text-sm text-muted-foreground'>
-            Manual trigger used to execute the current Workflow.
+            Manual Trigger Settings:
           </p>
           <p className='text-sm text-muted-foreground'>
             No additional settings currently available.

@@ -33,8 +33,14 @@ const triggerNodes: NodeTypeOption[] = [
   { 
     type: NodeType.MANUAL_TRIGGER,
     label: "Trigger Workflow manually",
-    description: "Runs the Workflow immediately. Good for getting started quickly.",
+    description: "Enables manual Workflow execution via the ''Execute Workflow'' button. Good for getting started quickly.",
     icon: MousePointerIcon,
+  },
+  { 
+    type: NodeType.GOOGLE_FORM_TRIGGER,
+    label: "Google Form",
+    description: "Executes the Workflow when a Google Form is submitted.",
+    icon: '/logos/googleform.svg',
   },
 ];
 

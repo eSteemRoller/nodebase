@@ -47,7 +47,7 @@ export function WorkflowNode({
             {name}
           </p>
           {description && ( 
-            <p className="text-muted-foreground truncate text-sm">
+            <p className="text-muted-foreground truncate hover:underline text-sm">
               {description}
             </p>
           )}

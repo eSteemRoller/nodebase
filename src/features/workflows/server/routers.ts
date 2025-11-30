@@ -9,6 +9,7 @@ import { generateSlug } from 'random-word-slugs';
 import z from 'zod';
 import { inngest } from "@/inngest/client";
 import { executeWorkflow } from "@/inngest/functions";
+import { sendWorkflowExecution } from "@/inngest/utils";
 
 
 export const workflowsRouter = createTRPCRouter({ 
@@ -22,9 +23,8 @@ export const workflowsRouter = createTRPCRouter({
         },
       });
 
-      await inngest.send({ 
-        name: 'workflows/executeWorkflow.workflow',  // aka execute.workflow
-        data: { workflowId: input.id },
+      await sendWorkflowExecution({ 
+        workflowId: input.id,
       });
 
       return workflow;
