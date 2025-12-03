@@ -30,7 +30,7 @@ export const GoogleFormTriggerDialog = ({
   const workflowId = params.workflowId as string;
 
   // Construct the webhook URL
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:80';
   const webhookUrl = 
     `${baseUrl}/api/webhooks/google-form?workflowId=${workflowId}`;
 
@@ -45,7 +45,7 @@ export const GoogleFormTriggerDialog = ({
 
   return ( 
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="w-full max-w-lg">
         <DialogHeader>
           <DialogTitle>
             Google Form Trigger Configuration
@@ -56,7 +56,7 @@ export const GoogleFormTriggerDialog = ({
             Google Form is submitted.
           </DialogDescription>
         </DialogHeader>
-        <div className='space-y-4'>
+        <div className='overflow-auto max-h-[65vh] space-y-4'>
           <div className='space-y-2'>
             <Label htmlFor='webhook-url'>
               Webhook URL
@@ -92,19 +92,19 @@ export const GoogleFormTriggerDialog = ({
               list-decimal 
               list-inside'
             >
-              <li>Login to your Google account and open your Google Form</li>
-              <li>Click on the ellipsis (...) menu near the top right corner</li>
-              <li>Click on "Apps Script"</li>
-              <li>Click the "Copy Google Apps Script" button below</li>
+              <li>Login to your Google account and open your Google Form.</li>
+              <li>Click on the ellipsis (...) menu near the top right corner.</li>
+              <li>Click on "Apps Script."</li>
+              <li>Click the "Copy Google Apps Script" button below.</li>
               <li>Paste the script in the scriptwriting area, completely overwriting the "myFunction" default script function template.</li>
               <li>To the right of "WEBHOOK_URL" verify if the current webhook URL is the one you want to use.</li>
-              <li>If the "WEBHOOK_URL" is missing or problematic, you can replace "webhookUrl" with the webhook URL above (without quotes)</li>
-              <li>Click on the floppy disk icon to "Save project to Drive"</li>
-              <li>Click on "Triggers" (the clock icon) in the left slideout menu</li>
-              <li>Click on the "Add Trigger" button near the bottom right corner</li>
+              <li>If the "WEBHOOK_URL" is missing or problematic, you can replace "webhookUrl" with the webhook URL above (without quotes).</li>
+              <li>Click on the floppy disk icon to "Save project to Drive."</li>
+              <li>Click on "Triggers" (the clock icon) in the left slideout menu.</li>
+              <li>Click on the "Add Trigger" button near the bottom right corner.</li>
               <li>Verify the trigger settings.</li>
-              <li>For this example, we are using the event source, "From form," the event type, "On form submit," and the failure notification setting, "Notify me immediately"</li>
-              <li>Save the trigger.</li>
+              <li>For this example, we are using the event source, "From form," the event type, "On form submit," and the failure notification setting, "Notify me immediately."</li>
+              <li>Click on the "Save" button.</li>
               <li>Click on "On form submit"</li>
               <li>Save your Trigger</li>
             </ol>
