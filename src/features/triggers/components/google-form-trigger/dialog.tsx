@@ -105,8 +105,9 @@ export const GoogleFormTriggerDialog = ({
               <li>Verify the trigger settings.</li>
               <li>For this example, we are using the event source, "From form," the event type, "On form submit," and the failure notification setting, "Notify me immediately."</li>
               <li>Click on the "Save" button.</li>
-              <li>Click on "On form submit"</li>
-              <li>Save your Trigger</li>
+              <li>Return to your Google Form.</li>
+              <li>Answer the "endpoint" question by entering a valid URL.</li>
+              <li>Click on the "Submit" button.</li>
             </ol>
           </div>
           <div className='rounded-lg 

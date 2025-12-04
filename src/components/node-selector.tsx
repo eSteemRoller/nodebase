@@ -39,7 +39,7 @@ const triggerNodes: NodeTypeOption[] = [
   { 
     type: NodeType.GOOGLE_FORM_TRIGGER,
     label: "Google Form",
-    description: "Executes the Workflow when a Google Form is submitted.",
+    description: "Executes the Workflow when a Google Form is opened or submitted.",
     icon: '/logos/googleform.svg',
   },
 ];
@@ -73,7 +73,7 @@ export function NodeSelector({
         (node) => node.type === NodeType.MANUAL_TRIGGER,
       );
       if (hasManualTrigger) { 
-        toast.error("Only one manual trigger allower per Workflow");
+        toast.error("Failure: Only one manual trigger allowed per Workflow");
         return;
       }
     }

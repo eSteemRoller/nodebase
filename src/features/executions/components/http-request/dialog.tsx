@@ -39,10 +39,13 @@ const formSchema = z.object({
     .string()
     .min(1, { message: "Variable Name is required" })
     .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { 
-      message: "Variable Name must start with a letter or underscore and contain only letters, underscores, and numbers.",
+      message: "Variable Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
     }),
-  endpoint: z.url({ message: "Please enter a valid URL" }),
-  method: z.enum(['GET', 'POST', 'PUT', 'PATCH', 'DELETE']),
+  endpoint: z
+    .string()
+    .min(1, { message: "Please enter a valid URL" }),
+  method: z
+    .enum(['GET', 'POST', 'PUT', 'PATCH', 'DELETE']),
   body: z 
     .string()
     .optional()
@@ -132,9 +135,9 @@ export const HttpRequestDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    Use this name to reference the result in other nodes: 
-                    {' '} 
-                    {`{${watchVariableName}.httpResponse.data}}`}
+                    <p>You can use a unique Variable Name dynamically to reference this node in other nodes.</p>
+                    <p>Example: </p> 
+                    <p>{`{{${watchVariableName}.httpResponse.data}}`}</p>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -183,8 +186,8 @@ export const HttpRequestDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter a static/standard URL (no variables) or use {"{{variables}}"} for 
-                    simple values or a {"{{json variable}}"} to stringify objects
+                    Enter a static/standard URL (no variables) or use {"{variables}"} for 
+                    simple values or a {"{{json variable}}"} to stringify objects.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -207,8 +210,8 @@ export const HttpRequestDialog = ({
                       />
                     </FormControl>
                     <FormDescription>
-                      Example: A JSON object with template variables. Use {"{{variables}}"} for 
-                      simple values or a {"{{json variable}}"} to stringify objects
+                      Example: A JSON object with template variables. Use {"{variables}"} for 
+                      simple values or a {"{{json variable}}"} to stringify objects.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
