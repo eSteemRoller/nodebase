@@ -10,7 +10,7 @@ import { GOOGLE_FORM_TRIGGER_CHANNEL_NAME } from '@/inngest/channels/google-form
 import { fetchGoogleFormTriggerRealtimeToken } from './actions';
 
 
-export const GoogleFormTriggerNode = memo((props: NodeProps) => {  // aka const GoogleFormTrigger
+export const StripeTriggerNode = memo((props: NodeProps) => {  // aka const n/a
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const nodeStatus = useNodeStatus({ 
@@ -27,11 +27,11 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {  // aka const 
       <GoogleFormTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen} />
       <BaseTriggerNode 
         {...props}
-        icon='/logos/googleform.svg'
+        icon='/logos/stripe.svg'
         width={64}
         height={64}
-        name="Google Form Trigger"
-        description="Executes Workflow upon opening or submission of a Google Form"
+        name="Stripe Trigger"
+        description="Executes Workflow when a Stripe event is detected/captured"
         status={nodeStatus}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}

@@ -8,7 +8,7 @@ import { googleFormTriggerExecutor } from "@/features/triggers/components/google
 export const executorRegistry: Record<NodeType, NodeExecutor> = { 
   [NodeType.MANUAL_TRIGGER]: manualTriggerExecutor,
   [NodeType.INITIAL]: manualTriggerExecutor,
-  [NodeType.HTTP_REQUEST]: httpRequestExecutor,  // To Do: fix types
+  [NodeType.HTTP_REQUEST]: httpRequestExecutor, 
   [NodeType.GOOGLE_FORM_TRIGGER]: googleFormTriggerExecutor,
 };
 
