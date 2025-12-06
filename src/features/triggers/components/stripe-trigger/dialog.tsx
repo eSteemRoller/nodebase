@@ -50,9 +50,9 @@ export const StripeTriggerDialog = ({
             Stripe Trigger Configuration
           </DialogTitle>
           <DialogDescription>
-            Use this webhook URL in your Stripe Dashboard 
-            to trigger this Workflow when a Stripe payment 
-            event occurs.
+            Use this webhook URL in your Stripe account 
+            to trigger this Workflow when one or more Stripe  
+            events occur.
           </DialogDescription>
         </DialogHeader>
         <div className='overflow-auto max-h-[65vh] space-y-4'>
@@ -91,15 +91,21 @@ export const StripeTriggerDialog = ({
               list-decimal 
               list-inside'
             >
+              <li>Copy the Webhook URL above.</li>
               <li>Login to your Stripe account and open your 
                 Stripe Dashboard.</li>
-              <li>Click on the "Developers" menu.</li>
+              <li>Click on the "Developers" menu near the bottom left corner.</li>
               <li>Click on "Webhooks."</li>
-              <li>Click on "Add endpoint."</li>
-              <li>Paste the Webhook URL above.</li>
+              <li>Click on the "Add destination" button.</li>
               <li>Select the events you want to listen for 
-                (e.g., payment_intent.succeeded).</li>
-              <li>Save and Copy the Signing Secret.</li>
+                <p>&emsp;(e.g., payment_intent.succeeded).</p></li>
+              <li>Leave the Destination type, "Webhook endpoint," selected and 
+                <p>&emsp;click on "Continue" near the lower left corner.</p></li>
+              <li>Paste the copied Webhook URL into Stripe's "Endpoint URL" 
+                <p>&emsp;field.</p></li>
+              <li>Edit the other Stripe fields as necessary.</li>
+              <li>Click on the "Create destination" button.</li>
+              <li>Click on "Close Workbench" near the lower right corner.</li>
             </ol>
           </div>
           <div className='rounded-lg 

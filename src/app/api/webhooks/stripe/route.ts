@@ -33,6 +33,10 @@ export async function POST(request: NextRequest) {
         stripe: stripeData,
       },
     });
+    return NextResponse.json( 
+      { success: true },
+      { status: 200 },
+    );
   } catch (error) {
     console.error('Stripe webhook error:', error);
     return NextResponse.json( 
