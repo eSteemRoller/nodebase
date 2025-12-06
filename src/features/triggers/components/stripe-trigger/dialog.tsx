@@ -21,7 +21,7 @@ interface Props {
   onOpenChange: (open: boolean) => void;
 };
 
-export const GoogleFormTriggerDialog = ({ 
+export const StripeTriggerDialog = ({ 
   open,
   onOpenChange
 }: Props) => { 
@@ -31,7 +31,7 @@ export const GoogleFormTriggerDialog = ({
   // Construct the webhook URL
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:80';
   const webhookUrl = 
-    `${baseUrl}/api/webhooks/google-form?workflowId=${workflowId}`;
+    `${baseUrl}/api/webhooks/stripe?workflowId=${workflowId}`;
 
   const copyToClipboard = async () => { 
     try { 
@@ -47,12 +47,12 @@ export const GoogleFormTriggerDialog = ({
       <DialogContent className="w-full max-w-lg">
         <DialogHeader>
           <DialogTitle>
-            Google Form Trigger Configuration
+            Stripe Trigger Configuration
           </DialogTitle>
           <DialogDescription>
-            Use this webhook URL in your Google Form's 
-            Apps Script to trigger this Workflow when your 
-            Google Form is submitted.
+            Use this webhook URL in your Stripe Dashboard 
+            to trigger this Workflow when a Stripe payment 
+            event occurs.
           </DialogDescription>
         </DialogHeader>
         <div className='overflow-auto max-h-[65vh] space-y-4'>
@@ -91,44 +91,16 @@ export const GoogleFormTriggerDialog = ({
               list-decimal 
               list-inside'
             >
-              <li>Login to your Google account and open your Google Form.</li>
-              <li>Click on the ellipsis (...) menu near the top right corner.</li>
-              <li>Click on "Apps Script."</li>
-              <li>Click the "Copy Google Apps Script" button below.</li>
-              <li>Paste the script in the scriptwriting area, completely overwriting the "myFunction" default script function template.</li>
-              <li>To the right of "WEBHOOK_URL" verify if the current webhook URL is the one you want to use.</li>
-              <li>If the "WEBHOOK_URL" is missing or problematic, you can replace "webhookUrl" with the webhook URL above (without quotes).</li>
-              <li>Click on the floppy disk icon to "Save project to Drive."</li>
-              <li>Click on "Triggers" (the clock icon) in the left slideout menu.</li>
-              <li>Click on the "Add Trigger" button near the bottom right corner.</li>
-              <li>Verify the trigger settings.</li>
-              <li>For this example, we are using the event source, "From form," the event type, "On form submit," and the failure notification setting, "Notify me immediately."</li>
-              <li>Click on the "Save" button.</li>
-              <li>Return to your Google Form.</li>
-              <li>Answer the "endpoint" question by entering a valid URL.</li>
-              <li>Click on the "Submit" button.</li>
+              <li>Login to your Stripe account and open your 
+                Stripe Dashboard.</li>
+              <li>Click on the "Developers" menu.</li>
+              <li>Click on "Webhooks."</li>
+              <li>Click on "Add endpoint."</li>
+              <li>Paste the Webhook URL above.</li>
+              <li>Select the events you want to listen for 
+                (e.g., payment_intent.succeeded).</li>
+              <li>Save and Copy the Signing Secret.</li>
             </ol>
-          </div>
-          <div className='rounded-lg 
-            bg-muted 
-            p-4 
-            space-y-4'
-          >
-            <h4 className='font-medium text-sm'>
-              Google Apps Script:
-            </h4>
-            <Button 
-              type='button'
-              variant='outline'
-              onClick={() => {}}
-            >
-              <CopyIcon className='size-4 mr-2' />
-              Copy Google Apps Script
-            </Button>
-            <p className='text-xs text-muted-foreground'>
-              This script includes the Webhook URL above and it 
-              handles form submissions
-            </p>
           </div>
           <div className='rounded-lg 
             bg-muted
@@ -136,36 +108,61 @@ export const GoogleFormTriggerDialog = ({
             space-y-2' 
           >
             <h4 className='font-medium text-sm'>Some Available Variables</h4>
-            <ul className='text-sm text-muted-foreground space-y-2'>
+            <ul className='text-sm text-muted-foreground space-y-1'>
               <li>
                 <code className='bg-background 
-                  px-2 
+                  px-1 
                   py-0.5 
                   rounded'
                 >
-                  {'{{googleForm.respondentEmail}}'}
+                  {'{{stripe.eventType}}'}
                 </code>
-                (Respondent's e-mail)
+                <p>(format all responses as JSON)</p>
+                <p> - Event type (e.g., payment_intent.succeeded)</p>
               </li>
               <li>
                 <code className='bg-background 
-                  px-2 
+                  px-1 
                   py-0.5 
                   rounded'
                 >
-                  {'{{googleForm.responses["Question Name"]}}'}
+                  {'{{stripe.amount}}'}
                 </code>
-                (specific answer)
+                <p>(format all responses as JSON)</p>
+                <p> - Payment amount</p>
               </li>
               <li>
                 <code className='bg-background 
-                  px-2 
+                  px-1 
                   py-0.5 
                   rounded'
                 >
-                  {'{{json.googleForm.responses}}'}
+                  {'{{stripe.currency}}'}
                 </code>
-                (format all responses as JSON)
+                <p>(format all responses as JSON)</p>
+                <p> - Currency code</p>
+              </li>
+              <li>
+                <code className='bg-background 
+                  px-1 
+                  py-0.5 
+                  rounded'
+                >
+                  {'{{stripe.customerId}}'}
+                </code>
+                <p>(format all responses as JSON)</p>
+                <p> - Customer Id</p>
+              </li>
+              <li>
+                <code className='bg-background 
+                  px-1 
+                  py-0.5 
+                  rounded'
+                >
+                  {'{{json.stripe}}'}
+                </code>
+                <p>(format all responses as JSON)</p>
+                <p> - Full event data in JSON format</p>
               </li>
             </ul>
           </div>
