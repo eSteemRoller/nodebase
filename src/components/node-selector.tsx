@@ -57,6 +57,12 @@ const executionNodes: NodeTypeOption[] = [
     description: "Makes an HTTP request",
     icon: GlobeIcon,
   },
+  { 
+    type: NodeType.GEMINI_EXECUTION,
+    label: "Gemini AI",
+    description: "Uses Google Gemini AI",
+    icon: '/logos/gemini.svg',
+  },
 ];
 
 interface NodeSelectorProps { 

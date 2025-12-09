@@ -3,7 +3,7 @@ import type { NodeExecutor } from "@/features/executions/types";
 import { NonRetriableError } from "inngest";
 import ky, { type Options as KyOptions } from 'ky';
 import Handlebars from 'handlebars';
-import { httpRequestChannel } from "@/inngest/channels/http-request";
+import { geminiChannel } from "@/inngest/channels/gemini";
 
 
 Handlebars.registerHelper('json', (context) => {
@@ -16,14 +16,21 @@ Handlebars.registerHelper('json', (context) => {
   }
 });
 
-type HttpRequestData = { 
+type geminiData = { 
   variableName?: string;
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  endpoint?: string;
-  body?: string;
+  model: 
+    'gemini-1.5-flash'|
+    'gemini-1.5-flash-8b'|
+    'gemini-1.5-pro'|
+    'gemini-1.0-pro'|
+    'gemini-pro'|
+    undefined
+  ;
+  systemPrompt?: string;
+  userPrompt: string;
 };
 
-export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({ 
+export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({ 
   data,
   nodeId,
   context,
@@ -31,7 +38,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
   publish,
 }) => { 
     await publish( 
-      httpRequestChannel().status({ 
+      geminiChannel().status({ 
         nodeId,
         status: 'loading',
       }),
@@ -39,11 +46,11 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
   
 
   try {
-    const result = await step.run('http-request', async () => { 
+    const result = await step.run('gemini', async () => { 
 
       if (!data.variableName) { 
         await publish( 
-          httpRequestChannel().status({ 
+          geminiChannel().status({ 
             nodeId,
             status: 'error',
           }),
@@ -53,7 +60,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
 
       if (!data.method) { 
         await publish( 
-          httpRequestChannel().status({ 
+          geminiChannel().status({ 
             nodeId,
             status: 'error',
           }),
@@ -63,7 +70,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
 
       if (!data.endpoint) { 
         await publish( 
-          httpRequestChannel().status({ 
+          geminiChannel().status({ 
             nodeId,
             status: 'error',
           }),
@@ -106,7 +113,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
     });
 
     await publish( 
-        httpRequestChannel().status({ 
+        geminiChannel().status({ 
           nodeId,
           status: 'success',
         }),
@@ -115,7 +122,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
     return result;
   } catch (error) { 
     await publish( 
-      httpRequestChannel().status({ 
+      geminiChannel().status({ 
         nodeId,
         status: 'error',
       }),
