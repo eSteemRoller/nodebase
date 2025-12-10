@@ -19,13 +19,6 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,13 +27,6 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
 
-export const AVAILABLE_MODELS = [ 
-  'gemini-1.5-flash',
-  'gemini-1.5-flash-8b',
-  'gemini-1.5-pro',
-  'gemini-1.0-pro',
-  'gemini-pro',
-] as const;
 
 const formSchema = z.object({ 
   variableName: z
@@ -49,8 +35,6 @@ const formSchema = z.object({
     .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { 
       message: "Variable Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
     }),
-  model: z
-    .enum(AVAILABLE_MODELS),
   systemPrompt: z
     .string()
     .optional(),
@@ -79,7 +63,6 @@ export const GeminiDialog = ({
     resolver: zodResolver(formSchema),
     defaultValues: { 
       variableName: defaultValues.variableName || '',
-      model: defaultValues.model || AVAILABLE_MODELS[0],
       systemPrompt: defaultValues.systemPrompt || '',
       userPrompt: defaultValues.userPrompt || '',
     },
@@ -90,7 +73,6 @@ export const GeminiDialog = ({
     if (open) { 
       form.reset({ 
         variableName: defaultValues.variableName || '',
-        model: defaultValues.model || AVAILABLE_MODELS[0],
         systemPrompt: defaultValues.systemPrompt || '',
         userPrompt: defaultValues.userPrompt || '',
       });
@@ -101,7 +83,7 @@ export const GeminiDialog = ({
     form 
   ]);
 
-  const watchVariableName = form.watch('variableName') || "myApiCallName";
+  const watchVariableName = form.watch('variableName') || "myGeminiName";
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => 
   { 
@@ -133,7 +115,7 @@ export const GeminiDialog = ({
                   <FormLabel>Variable Name</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="myApiCallName"
+                      placeholder="myGeminiName"
                       {...field}
                     />
                   </FormControl>
@@ -141,36 +123,6 @@ export const GeminiDialog = ({
                     <p>You can use a unique Variable Name dynamically to reference this node in other nodes.</p>
                     <p>Example: </p> 
                     <p>{`{{${watchVariableName}.text}}`}</p> {/* To Do: what's the Inngest output? */}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField 
-              control={form.control}
-              name='model'
-              render={({ field }) => ( 
-                <FormItem>
-                  <FormLabel>AI Model</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder="Select an AI model" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {AVAILABLE_MODELS.map((model) => ( 
-                        <SelectItem key={model} value={model}>
-                          {model}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    <p>The Gemini AI model this node will prompt.</p>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -192,7 +144,7 @@ export const GeminiDialog = ({
                   <FormDescription>
                     Guides the behavior of the AI.
                     Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
-                    to stringify objects.
+                     &nbsp;to stringify objects.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -214,7 +166,7 @@ export const GeminiDialog = ({
                   <FormDescription>
                     The prompt to send to the AI.
                     Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
-                    to stringify objects.
+                     &nbsp;to stringify objects.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

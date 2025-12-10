@@ -57,8 +57,8 @@ export function LoginForm() {
         onSuccess: () => { 
           router.push('/');
         },
-        onError: (ctx) => { 
-          toast.error(ctx.error.message);
+        onError: (ctx: any) => { 
+          toast.error(ctx?.error?.message ?? String(ctx));
         },
       },
     );

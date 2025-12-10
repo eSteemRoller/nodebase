@@ -4,7 +4,7 @@
 import { useReactFlow, type Node, type NodeProps } from '@xyflow/react';
 import { memo, useState } from 'react';
 import { BaseExecutionNode } from '@/features/executions/components/base-execution-node';
-import { GeminiFormValues, GeminiDialog, AVAILABLE_MODELS } from './dialog';
+import { GeminiFormValues, GeminiDialog } from './dialog';
 import { useNodeStatus } from '../../hooks/use-node-status';
 import { fetchGeminiRealtimeToken } from './actions';
 import { GEMINI_CHANNEL_NAME } from '@/inngest/channels/gemini';
@@ -12,14 +12,6 @@ import { GEMINI_CHANNEL_NAME } from '@/inngest/channels/gemini';
 
 type GeminiNodeData = { 
   variableName?: string;
-  model: 
-    'gemini-1.5-flash'|
-    'gemini-1.5-flash-8b'|
-    'gemini-1.5-pro'|
-    'gemini-1.0-pro'|
-    'gemini-pro'|
-    undefined
-  ;
   systemPrompt?: string;
   userPrompt?: string;
   // [key: string]: unknown;
@@ -58,7 +50,7 @@ export const GeminiExecutionNode = memo(
   
   const nodeData = props.data;
   const descriptionModel = nodeData?.userPrompt  // aka const description
-    ? `${nodeData.model || AVAILABLE_MODELS[0]}: ${nodeData.userPrompt
+    ? `gemini-2.0-flash: ${nodeData.userPrompt
         .slice(0, 50)}...`
     : "Not configured";
   // const descriptionModel = nodeData?.userPrompt  // aka const description
@@ -80,7 +72,7 @@ export const GeminiExecutionNode = memo(
         {...props}
         id={props.id}
         icon='/logos/gemini.svg'
-        name="Gemini"
+        name="Gemini AI"
         status={nodeStatus}
         description={descriptionModel} // {descriptionName}
         onSettings={handleOpenSettings}

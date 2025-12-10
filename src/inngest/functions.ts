@@ -5,6 +5,7 @@ import prisma from '@/lib/db';
 import { topologicalSort } from './utils';
 import { NodeType } from '@/generated/prisma';
 import { getExecutor } from '@/features/executions/lib/executor-registry';
+import type { NodeExecutor } from '@/features/executions/types';
 import { httpRequestChannel } from './channels/http-request';
 import { manualTriggerChannel } from './channels/manual-trigger';
 import { googleFormTriggerChannel } from './channels/google-form-trigger';
@@ -50,16 +51,24 @@ export const executeWorkflow = inngest.createFunction(
     let context = event.data.initialData || {};
 
     // Execute each node
-    for (const node of sortedNodes) { 
-      const executor = getExecutor(node.type as NodeType);
-      context = await executor({ 
-        data: node.data as Record<string, unknown>,
+    for (const node of sortedNodes) {
+      // Cast executor to a generic NodeExecutor to avoid TypeScript errors
+      // caused by the registry returning executors with different specific
+      // data shapes. We validate/handle specific node types where needed.
+      const executor = getExecutor(node.type as NodeType) as unknown as NodeExecutor<any>;
+
+      // Call executor with the node data as `any` — this keeps runtime
+      // behavior while avoiding overly strict compile-time checks. For
+      // higher safety, validate `node.data` shape per node.type before
+      // invoking the executor.
+      context = await executor({
+        data: node.data as any,
         nodeId: node.id,
         context,
         step,
         publish,
       });
-    };
+    }
 
     return { 
       workflowId,

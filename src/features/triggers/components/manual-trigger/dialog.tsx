@@ -24,7 +24,7 @@ export const ManualTriggerDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Manual Workflow Execution Trigger Configuration
+            Manual Workflow Trigger Configuration
           </DialogTitle>
           <DialogDescription>
             Configure settings for this manual trigger
