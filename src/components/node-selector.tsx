@@ -60,8 +60,14 @@ const executionNodes: NodeTypeOption[] = [
   { 
     type: NodeType.GEMINI_EXECUTION,
     label: "Gemini AI",
-    description: "Uses Google Gemini AI",
+    description: "Uses Google Gemini AI to answer questions",
     icon: '/logos/gemini.svg',
+  },
+  { 
+    type: NodeType.CHATGPT_EXECUTION,
+    label: "ChatGPT AI",
+    description: "Uses OpenAI ChatGPT AI to answer questions",
+    icon: '/logos/chatgpt.svg',
   },
 ];
 

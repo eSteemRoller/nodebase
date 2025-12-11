@@ -8,6 +8,7 @@ import { ManualTriggerNode } from '@/features/triggers/components/manual-trigger
 import { GoogleFormTriggerNode } from '@/features/triggers/components/google-form-trigger/node';
 import { StripeTriggerNode } from '@/features/triggers/components/stripe-trigger/node';
 import { GeminiExecutionNode } from '@/features/executions/components/gemini/node';
+import { ChatGPTExecutionNode } from '@/features/executions/components/chatgpt/node';
 
 
 export const nodeComponents = { 
@@ -17,6 +18,7 @@ export const nodeComponents = {
   [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTriggerNode,  // aka GoogleFormTrigger
   [NodeType.STRIPE_TRIGGER]: StripeTriggerNode,  // aka n/a
   [NodeType.GEMINI_EXECUTION]: GeminiExecutionNode,  // aka .GEMINI]: GeminiNode
+  [NodeType.CHATGPT_EXECUTION]: ChatGPTExecutionNode,  // aka .GEMINI]: GeminiNode
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof nodeComponents;

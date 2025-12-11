@@ -44,16 +44,16 @@ const formSchema = z.object({
 });
 
 
-export type GeminiFormValues = z.infer<typeof formSchema>;
+export type ChatGptFormValues = z.infer<typeof formSchema>;
 
 interface Props { 
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
-  defaultValues?: Partial<GeminiFormValues>;
+  defaultValues?: Partial<ChatGptFormValues>;
 };
 
-export const GeminiDialog = ({ 
+export const ChatGptDialog = ({ 
   open,
   onOpenChange,
   onSubmit,
@@ -83,7 +83,7 @@ export const GeminiDialog = ({
     form 
   ]);
 
-  const watchVariableName = form.watch('variableName') || "myGeminiName";
+  const watchVariableName = form.watch('variableName') || "myChatGPTName";
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => 
   { 
@@ -96,10 +96,10 @@ export const GeminiDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Google Gemini AI Configuration
+            OpenAI ChatGPT AI Configuration
           </DialogTitle>
           <DialogDescription>
-            Configure the AI model and prompt for this Gemini AI node.
+            Configure the AI model and prompt for this ChatGPT AI node.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -115,7 +115,7 @@ export const GeminiDialog = ({
                   <FormLabel>Variable Name</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="myGeminiName"
+                      placeholder="myChatGPTName"
                       {...field}
                     />
                   </FormControl>
