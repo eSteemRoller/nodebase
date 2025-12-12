@@ -4,7 +4,7 @@ import { NonRetriableError } from 'inngest';
 import { generateText } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import Handlebars from 'handlebars';
-import { chatGptChannel } from '@/inngest/channels/chatgpt';
+import { chatGptExecutionChannel } from '@/inngest/channels/chatgpt';
 
 
 Handlebars.registerHelper('json', (context) => {
@@ -17,13 +17,13 @@ Handlebars.registerHelper('json', (context) => {
   }
 });
 
-type chatGptData = { 
+type chatGptExecutionData = { 
   variableName?: string;
   systemPrompt?: string;
   userPrompt: string;
 };
 
-export const chatGptExecutionExecutor: NodeExecutor<chatGptData> = async({ 
+export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = async({ 
   data,
   nodeId,
   context,
@@ -31,7 +31,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptData> = async({
   publish,
 }) => { 
   await publish( 
-    chatGptChannel().status({ 
+    chatGptExecutionChannel().status({ 
       nodeId,
       status: 'loading',
     }),
@@ -39,7 +39,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptData> = async({
 
   if (!data.variableName) { 
     await publish( 
-      chatGptChannel().status({ 
+      chatGptExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
@@ -49,7 +49,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptData> = async({
 
   if (!data.userPrompt) { 
     await publish( 
-      chatGptChannel().status({ 
+      chatGptExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
@@ -95,7 +95,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptData> = async({
         : '';
     
     await publish( 
-      chatGptChannel().status({ 
+      chatGptExecutionChannel().status({ 
         nodeId,
         status: 'success',
       }),
@@ -109,7 +109,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptData> = async({
     }
   } catch (error) {
     await publish( 
-      chatGptChannel().status({ 
+      chatGptExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),

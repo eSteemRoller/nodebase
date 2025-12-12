@@ -4,36 +4,36 @@
 import { useReactFlow, type Node, type NodeProps } from '@xyflow/react';
 import { memo, useState } from 'react';
 import { BaseExecutionNode } from '@/features/executions/components/base-execution-node';
-import { ChatGptFormValues, ChatGptDialog } from './dialog';
+import { ChatGptExecutionFormValues, ChatGptExecutionDialog } from './dialog';  // aka OpenAiFormValues, OpenAiDialog
 import { useNodeStatus } from '../../hooks/use-node-status';
-import { fetchGeminiRealtimeToken } from './actions';
-import { GEMINI_CHANNEL_NAME } from '@/inngest/channels/gemini';
+import { fetchChatGptExecutionRealtimeToken } from './actions';
+import { CHATGPT_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/chatgpt';
 
 
-type ChatGptNodeData = {  // aka OpenAINodeData
+type ChatGptExecutionNodeData = {  // aka OpenAINodeData
   variableName?: string;
   systemPrompt?: string;
   userPrompt?: string;
   // [key: string]: unknown;
 };
 
-type ChatGptNodeType = Node<ChatGptNodeData>;
+type ChatGptExecutionNodeType = Node<ChatGptExecutionNodeData>;
 
 export const ChatGptExecutionNode = memo(
-  (props: NodeProps<ChatGptNodeType>) => { 
+  (props: NodeProps<ChatGptExecutionNodeType>) => { 
     const [dialogOpen, setDialogOpen] = useState(false);
     const { setNodes } = useReactFlow();
 
   const nodeStatus = useNodeStatus({ 
     nodeId: props.id,
-    channel: GEMINI_CHANNEL_NAME,
+    channel: CHATGPT_EXECUTION_CHANNEL_NAME,
     topic: 'status',
-    refreshToken: fetchGeminiRealtimeToken,
+    refreshToken: fetchChatGptExecutionRealtimeToken,
   });
 
   const handleOpenSettings = () => setDialogOpen(true);
 
-  const handleSubmit = (values: ChatGptFormValues) => { 
+  const handleSubmit = (values: ChatGptExecutionFormValues) => { 
     setNodes((nodes) => nodes.map((node) => { 
       if (node.id == props.id) { 
         return { 
@@ -62,7 +62,7 @@ export const ChatGptExecutionNode = memo(
 
   return ( 
     <>
-      <ChatGptDialog 
+      <ChatGptExecutionDialog 
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
@@ -82,4 +82,4 @@ export const ChatGptExecutionNode = memo(
   )
 });
 
-ChatGptExecutionNode.displayName = "ChatGPTNode";
+ChatGptExecutionNode.displayName = "ChatGPTExecutionNode";

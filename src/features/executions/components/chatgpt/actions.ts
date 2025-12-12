@@ -2,18 +2,18 @@
 'use server';
 
 import { getSubscriptionToken, type Realtime } from "@inngest/realtime";
-import { geminiChannel } from "@/inngest/channels/gemini";
+import { chatGptExecutionChannel } from "@/inngest/channels/chatgpt";
 import { inngest } from "@/inngest/client";
 
 
-export type GeminiToken = Realtime.Token< 
-  typeof geminiChannel, 
+export type ChatGptExecutionToken = Realtime.Token< 
+  typeof chatGptExecutionChannel, 
   ['status']
 >;
 
-export async function fetchGeminiRealtimeToken():Promise<GeminiToken> { 
+export async function fetchChatGptExecutionRealtimeToken():Promise<ChatGptExecutionToken> { 
   const token = await getSubscriptionToken(inngest, { 
-    channel: geminiChannel(),
+    channel: chatGptExecutionChannel(),
     topics: ['status'],
   });
 

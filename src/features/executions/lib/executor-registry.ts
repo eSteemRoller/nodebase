@@ -5,6 +5,7 @@ import { httpRequestExecutor } from '../components/http-request/executor';
 import { googleFormTriggerExecutor } from '@/features/triggers/components/google-form-trigger/executor';
 import { stripeTriggerExecutor } from '@/features/triggers/components/stripe-trigger/executor';
 import { geminiExecutionExecutor } from '../components/gemini/executor';
+import { chatGptExecutionExecutor } from '../components/chatgpt/executor';
 
 
 type ExecutorMap = {
@@ -14,8 +15,8 @@ type ExecutorMap = {
   [NodeType.GOOGLE_FORM_TRIGGER]: typeof googleFormTriggerExecutor;
   [NodeType.STRIPE_TRIGGER]: typeof stripeTriggerExecutor;
   [NodeType.GEMINI_EXECUTION]: typeof geminiExecutionExecutor;
-  [NodeType.OPENAI_EXECUTION]: typeof geminiExecutionExecutor;  // To Do: Fix
-  [NodeType.ANTHROPIC_EXECUTION]: typeof geminiExecutionExecutor;  // To Do: Fix
+  [NodeType.CHATGPT_EXECUTION]: typeof chatGptExecutionExecutor;  // To Do: Fix
+  [NodeType.CLAUDE_EXECUTION]: typeof geminiExecutionExecutor;  // To Do: Fix
 };
 
 export const executorRegistry: ExecutorMap = { 
@@ -25,8 +26,8 @@ export const executorRegistry: ExecutorMap = {
   [NodeType.GOOGLE_FORM_TRIGGER]: googleFormTriggerExecutor,
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
   [NodeType.GEMINI_EXECUTION]: geminiExecutionExecutor,
-  [NodeType.OPENAI_EXECUTION]: geminiExecutionExecutor,  // To Do: Fix
-  [NodeType.ANTHROPIC_EXECUTION]: geminiExecutionExecutor,  // To Do: Fix
+  [NodeType.CHATGPT_EXECUTION]: chatGptExecutionExecutor,  // To Do: Fix
+  [NodeType.CLAUDE_EXECUTION]: geminiExecutionExecutor,  // To Do: Fix
 };
 
 export const getExecutor = <T extends NodeType>(type: T): ExecutorMap[T] => { 

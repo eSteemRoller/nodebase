@@ -44,16 +44,16 @@ const formSchema = z.object({
 });
 
 
-export type ChatGptFormValues = z.infer<typeof formSchema>;
+export type ChatGptExecutionFormValues = z.infer<typeof formSchema>;
 
 interface Props { 
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
-  defaultValues?: Partial<ChatGptFormValues>;
+  defaultValues?: Partial<ChatGptExecutionFormValues>;
 };
 
-export const ChatGptDialog = ({ 
+export const ChatGptExecutionDialog = ({ 
   open,
   onOpenChange,
   onSubmit,
@@ -99,7 +99,7 @@ export const ChatGptDialog = ({
             OpenAI ChatGPT AI Configuration
           </DialogTitle>
           <DialogDescription>
-            Configure the AI model and prompt for this ChatGPT AI node.
+            Configure the AI model and prompt for this ChatGPT AI execution node.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
