@@ -4,7 +4,7 @@ import { NonRetriableError } from 'inngest';
 import { generateText } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import Handlebars from 'handlebars';
-import { geminiChannel } from '@/inngest/channels/gemini';
+import { geminiExecutionChannel } from '@/inngest/channels/gemini';
 
 
 Handlebars.registerHelper('json', (context) => {
@@ -17,13 +17,13 @@ Handlebars.registerHelper('json', (context) => {
   }
 });
 
-type geminiData = { 
+type geminiExecutionData = { 
   variableName?: string;
   systemPrompt?: string;
   userPrompt: string;
 };
 
-export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({ 
+export const geminiExecutionExecutor: NodeExecutor<geminiExecutionData> = async({ 
   data,
   nodeId,
   context,
@@ -31,7 +31,7 @@ export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({
   publish,
 }) => { 
   await publish( 
-    geminiChannel().status({ 
+    geminiExecutionChannel().status({ 
       nodeId,
       status: 'loading',
     }),
@@ -39,7 +39,7 @@ export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({
 
   if (!data.variableName) { 
     await publish( 
-      geminiChannel().status({ 
+      geminiExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
@@ -49,7 +49,7 @@ export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({
 
   if (!data.userPrompt) { 
     await publish( 
-      geminiChannel().status({ 
+      geminiExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
@@ -75,10 +75,10 @@ export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({
 
   try {
     const { steps } = await step.ai.wrap( 
-      'gemini-generate-text',
+      'google-generate-text',
       generateText,
       { 
-        model: google('gemini-2.0-flash'),
+        model: google("gemini-2.5-flash"),
         system: systemPrompt,
         prompt: userPrompt,
         experimental_telemetry: { 
@@ -95,7 +95,7 @@ export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({
         : '';
     
     await publish( 
-      geminiChannel().status({ 
+      geminiExecutionChannel().status({ 
         nodeId,
         status: 'success',
       }),
@@ -109,7 +109,7 @@ export const geminiExecutionExecutor: NodeExecutor<geminiData> = async({
     }
   } catch (error) {
     await publish( 
-      geminiChannel().status({ 
+      geminiExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),

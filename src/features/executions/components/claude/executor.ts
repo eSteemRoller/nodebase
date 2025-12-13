@@ -2,9 +2,9 @@
 import type { NodeExecutor } from '@/features/executions/types';
 import { NonRetriableError } from 'inngest';
 import { generateText } from 'ai';
-import { createOpenAI } from '@ai-sdk/openai';
+import { createAnthropic } from '@ai-sdk/anthropic';
 import Handlebars from 'handlebars';
-import { chatGptExecutionChannel } from '@/inngest/channels/chatgpt';
+import { claudeExecutionChannel } from '@/inngest/channels/claude';
 
 
 Handlebars.registerHelper('json', (context) => {
@@ -17,13 +17,13 @@ Handlebars.registerHelper('json', (context) => {
   }
 });
 
-type chatGptExecutionData = { 
+type claudeExecutionData = { 
   variableName?: string;
   systemPrompt?: string;
   userPrompt: string;
 };
 
-export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = async({ 
+export const claudeExecutionExecutor: NodeExecutor<claudeExecutionData> = async({ 
   data,
   nodeId,
   context,
@@ -31,7 +31,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = asyn
   publish,
 }) => { 
   await publish( 
-    chatGptExecutionChannel().status({ 
+    claudeExecutionChannel().status({ 
       nodeId,
       status: 'loading',
     }),
@@ -39,22 +39,22 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = asyn
 
   if (!data.variableName) { 
     await publish( 
-      chatGptExecutionChannel().status({ 
+      claudeExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
     );
-    throw new NonRetriableError("ChatGPT AI Execution node: Variable Name is missing");
+    throw new NonRetriableError("Claude AI Execution node: Variable Name is missing");
   }
 
   if (!data.userPrompt) { 
     await publish( 
-      chatGptExecutionChannel().status({ 
+      claudeExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
     );
-    throw new NonRetriableError("ChatGPT AI Execution node: User prompt is missing");
+    throw new NonRetriableError("Claude AI Execution node: User prompt is missing");
   }
 
   // To Do: Throw error if credential is missing
@@ -67,18 +67,18 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = asyn
 
   // To Do: Fetch credential that user selected
 
-  const credentialValue = process.env.OPENAI_API_KEY!;
+  const credentialValue = process.env.ANTHROPIC_API_KEY!;
 
-  const openAi = createOpenAI({ 
+  const anthropic = createAnthropic({ 
     apiKey: credentialValue,
   });
 
   try {
     const { steps } = await step.ai.wrap( 
-      'openai-generate-text',
+      'anthropic-generate-text',
       generateText,
       { 
-        model: openAi("gpt-4.1"), 
+        model: anthropic("claude-sonnet-4-0"), 
         system: systemPrompt,
         prompt: userPrompt,
         experimental_telemetry: { 
@@ -95,7 +95,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = asyn
         : '';
     
     await publish( 
-      chatGptExecutionChannel().status({ 
+      claudeExecutionChannel().status({ 
         nodeId,
         status: 'success',
       }),
@@ -109,7 +109,7 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = asyn
     }
   } catch (error) {
     await publish( 
-      chatGptExecutionChannel().status({ 
+      claudeExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),

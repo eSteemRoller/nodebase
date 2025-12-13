@@ -4,36 +4,36 @@
 import { useReactFlow, type Node, type NodeProps } from '@xyflow/react';
 import { memo, useState } from 'react';
 import { BaseExecutionNode } from '@/features/executions/components/base-execution-node';
-import { ChatGptExecutionFormValues, ChatGptExecutionDialog } from './dialog';  // aka OpenAiFormValues, OpenAiDialog
+import { ClaudeExecutionFormValues, ClaudeExecutionDialog } from './dialog';  // aka OpenAiFormValues, OpenAiDialog
 import { useNodeStatus } from '../../hooks/use-node-status';
-import { fetchChatGptExecutionRealtimeToken } from './actions';
-import { CHATGPT_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/chatgpt';
+import { fetchClaudeExecutionRealtimeToken } from './actions';
+import { CLAUDE_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/claude';
 
 
-type ChatGptExecutionNodeData = {  // aka OpenAINodeData
+type ClaudeExecutionNodeData = {  // aka OpenAINodeData
   variableName?: string;
   systemPrompt?: string;
   userPrompt?: string;
   // [key: string]: unknown;
 };
 
-type ChatGptExecutionNodeType = Node<ChatGptExecutionNodeData>;
+type ClaudeExecutionNodeType = Node<ClaudeExecutionNodeData>;
 
-export const ChatGptExecutionNode = memo(
-  (props: NodeProps<ChatGptExecutionNodeType>) => { 
+export const ClaudeExecutionNode = memo(
+  (props: NodeProps<ClaudeExecutionNodeType>) => { 
     const [dialogOpen, setDialogOpen] = useState(false);
     const { setNodes } = useReactFlow();
 
   const nodeStatus = useNodeStatus({ 
     nodeId: props.id,
-    channel: CHATGPT_EXECUTION_CHANNEL_NAME,
+    channel: CLAUDE_EXECUTION_CHANNEL_NAME,
     topic: 'status',
-    refreshToken: fetchChatGptExecutionRealtimeToken,
+    refreshToken: fetchClaudeExecutionRealtimeToken,
   });
 
   const handleOpenSettings = () => setDialogOpen(true);
 
-  const handleSubmit = (values: ChatGptExecutionFormValues) => { 
+  const handleSubmit = (values: ClaudeExecutionFormValues) => { 
     setNodes((nodes) => nodes.map((node) => { 
       if (node.id == props.id) { 
         return { 
@@ -50,7 +50,7 @@ export const ChatGptExecutionNode = memo(
   
   const nodeData = props.data;
   const descriptionModel = nodeData?.userPrompt  // aka const description
-    ? `gpt-4.1: ${nodeData.userPrompt
+    ? `claude-sonnet-4-0: ${nodeData.userPrompt
         .slice(0, 50)}...`
     : "Not configured";
   // const descriptionModel = nodeData?.userPrompt  // aka const description
@@ -62,7 +62,7 @@ export const ChatGptExecutionNode = memo(
 
   return ( 
     <>
-      <ChatGptExecutionDialog 
+      <ClaudeExecutionDialog 
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
@@ -71,8 +71,8 @@ export const ChatGptExecutionNode = memo(
       <BaseExecutionNode 
         {...props}
         id={props.id}
-        icon='/logos/chatgpt.svg'
-        name="ChatGPT AI"
+        icon='/logos/claude.svg'
+        name="Claude AI"
         status={nodeStatus}
         description={descriptionModel} // {descriptionName}
         onSettings={handleOpenSettings}
@@ -82,4 +82,4 @@ export const ChatGptExecutionNode = memo(
   )
 });
 
-ChatGptExecutionNode.displayName = "ChatGPTExecutionNode";
+ClaudeExecutionNode.displayName = "ClaudeExecutionNode";

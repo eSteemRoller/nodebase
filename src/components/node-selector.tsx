@@ -58,16 +58,22 @@ const executionNodes: NodeTypeOption[] = [
     icon: GlobeIcon,
   },
   { 
-    type: NodeType.GEMINI_EXECUTION,
+    type: NodeType.GEMINI_EXECUTION,  // aka GEMINI
     label: "Gemini AI",
-    description: "Uses Google Gemini AI to answer questions",
+    description: "Prompts Google Gemini AI to answer questions",
     icon: '/logos/gemini.svg',
   },
   { 
-    type: NodeType.CHATGPT_EXECUTION,
+    type: NodeType.CHATGPT_EXECUTION,  // aka OPENAI
     label: "ChatGPT AI",
-    description: "Uses OpenAI ChatGPT AI to answer questions",
+    description: "Prompts OpenAI ChatGPT AI to answer questions",
     icon: '/logos/chatgpt.svg',
+  },
+  {
+    type: NodeType.CLAUDE_EXECUTION,  // aka ANTHROPIC
+    label: "Claude AI",
+    description: "Prompts OpenAI Claude AI to answer questions",
+    icon: '/logos/claude.svg',
   },
 ];
 

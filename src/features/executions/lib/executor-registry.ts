@@ -15,7 +15,7 @@ type ExecutorMap = {
   [NodeType.GOOGLE_FORM_TRIGGER]: typeof googleFormTriggerExecutor;
   [NodeType.STRIPE_TRIGGER]: typeof stripeTriggerExecutor;
   [NodeType.GEMINI_EXECUTION]: typeof geminiExecutionExecutor;
-  [NodeType.CHATGPT_EXECUTION]: typeof chatGptExecutionExecutor;  // To Do: Fix
+  [NodeType.CHATGPT_EXECUTION]: typeof chatGptExecutionExecutor; 
   [NodeType.CLAUDE_EXECUTION]: typeof geminiExecutionExecutor;  // To Do: Fix
 };
 
@@ -26,7 +26,7 @@ export const executorRegistry: ExecutorMap = {
   [NodeType.GOOGLE_FORM_TRIGGER]: googleFormTriggerExecutor,
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
   [NodeType.GEMINI_EXECUTION]: geminiExecutionExecutor,
-  [NodeType.CHATGPT_EXECUTION]: chatGptExecutionExecutor,  // To Do: Fix
+  [NodeType.CHATGPT_EXECUTION]: chatGptExecutionExecutor, 
   [NodeType.CLAUDE_EXECUTION]: geminiExecutionExecutor,  // To Do: Fix
 };
 

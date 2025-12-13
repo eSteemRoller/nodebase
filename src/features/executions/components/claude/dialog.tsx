@@ -44,16 +44,16 @@ const formSchema = z.object({
 });
 
 
-export type GeminiExecutionFormValues = z.infer<typeof formSchema>;
+export type ClaudeExecutionFormValues = z.infer<typeof formSchema>;
 
 interface Props { 
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
-  defaultValues?: Partial<GeminiExecutionFormValues>;
+  defaultValues?: Partial<ClaudeExecutionFormValues>;
 };
 
-export const GeminiExecutionDialog = ({ 
+export const ClaudeExecutionDialog = ({ 
   open,
   onOpenChange,
   onSubmit,
@@ -83,7 +83,7 @@ export const GeminiExecutionDialog = ({
     form 
   ]);
 
-  const watchVariableName = form.watch('variableName') || "myGeminiName";
+  const watchVariableName = form.watch('variableName') || "myClaudeName";
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => 
   { 
@@ -96,10 +96,10 @@ export const GeminiExecutionDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Google Gemini AI Configuration
+            Anthropic Claude AI Configuration
           </DialogTitle>
           <DialogDescription>
-            Configure the AI model and prompt for this Gemini AI node.
+            Configure the AI model and prompt for this Claude AI execution node.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -115,7 +115,7 @@ export const GeminiExecutionDialog = ({
                   <FormLabel>Variable Name</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="myGeminiName"
+                      placeholder="myClaudeName"
                       {...field}
                     />
                   </FormControl>
