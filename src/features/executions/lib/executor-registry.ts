@@ -11,7 +11,7 @@ import { chatGptExecutionExecutor } from '../components/chatgpt/executor';
 type ExecutorMap = {
   [NodeType.MANUAL_TRIGGER]: typeof manualTriggerExecutor;
   [NodeType.INITIAL]: typeof manualTriggerExecutor;
-  [NodeType.HTTP_REQUEST]: typeof httpRequestExecutor;
+  [NodeType.HTTP_REQUEST_EXECUTION]: typeof httpRequestExecutor;
   [NodeType.GOOGLE_FORM_TRIGGER]: typeof googleFormTriggerExecutor;
   [NodeType.STRIPE_TRIGGER]: typeof stripeTriggerExecutor;
   [NodeType.GEMINI_EXECUTION]: typeof geminiExecutionExecutor;
@@ -22,7 +22,7 @@ type ExecutorMap = {
 export const executorRegistry: ExecutorMap = { 
   [NodeType.MANUAL_TRIGGER]: manualTriggerExecutor,
   [NodeType.INITIAL]: manualTriggerExecutor,
-  [NodeType.HTTP_REQUEST]: httpRequestExecutor, 
+  [NodeType.HTTP_REQUEST_EXECUTION]: httpRequestExecutor, 
   [NodeType.GOOGLE_FORM_TRIGGER]: googleFormTriggerExecutor,
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
   [NodeType.GEMINI_EXECUTION]: geminiExecutionExecutor,

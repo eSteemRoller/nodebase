@@ -52,7 +52,7 @@ const triggerNodes: NodeTypeOption[] = [
 
 const executionNodes: NodeTypeOption[] = [
   { 
-    type: NodeType.HTTP_REQUEST,
+    type: NodeType.HTTP_REQUEST_EXECUTION,
     label: "HTTP Request",
     description: "Makes an HTTP request",
     icon: GlobeIcon,

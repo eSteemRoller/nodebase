@@ -167,6 +167,16 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CredentialScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  value: 'value',
+  type: 'type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
 exports.Prisma.WorkflowScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -182,6 +192,7 @@ exports.Prisma.NodeScalarFieldEnum = {
   type: 'type',
   position: 'position',
   data: 'data',
+  credentialId: 'credentialId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -221,12 +232,18 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.CredentialType = exports.$Enums.CredentialType = {
+  GEMINI_EXECUTION: 'GEMINI_EXECUTION',
+  CHATGPT_EXECUTION: 'CHATGPT_EXECUTION',
+  CLAUDE_EXECUTION: 'CLAUDE_EXECUTION'
+};
+
 exports.NodeType = exports.$Enums.NodeType = {
   INITIAL: 'INITIAL',
   MANUAL_TRIGGER: 'MANUAL_TRIGGER',
-  HTTP_REQUEST: 'HTTP_REQUEST',
   GOOGLE_FORM_TRIGGER: 'GOOGLE_FORM_TRIGGER',
   STRIPE_TRIGGER: 'STRIPE_TRIGGER',
+  HTTP_REQUEST_EXECUTION: 'HTTP_REQUEST_EXECUTION',
   GEMINI_EXECUTION: 'GEMINI_EXECUTION',
   CHATGPT_EXECUTION: 'CHATGPT_EXECUTION',
   CLAUDE_EXECUTION: 'CLAUDE_EXECUTION'
@@ -237,6 +254,7 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  Credential: 'Credential',
   Workflow: 'Workflow',
   Node: 'Node',
   Connection: 'Connection'

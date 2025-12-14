@@ -14,7 +14,7 @@ import { ClaudeExecutionNode } from '@/features/executions/components/claude/nod
 
 export const nodeComponents = { 
   [NodeType.INITIAL]: InitialNode,
-  [NodeType.HTTP_REQUEST]: HttpRequestNode,
+  [NodeType.HTTP_REQUEST_EXECUTION]: HttpRequestNode,
   [NodeType.MANUAL_TRIGGER]: ManualTriggerNode,
   [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTriggerNode,  // aka GoogleFormTrigger
   [NodeType.STRIPE_TRIGGER]: StripeTriggerNode,  // aka n/a

@@ -28,6 +28,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   workflows     Workflow[]
+  credentials   Credential[]
 
   @@unique([email])
   @@map("user")
@@ -78,6 +79,26 @@ model Verification {
   @@map("verification")
 }
 
+model Credential { 
+  id          String @id @default(cuid())
+  name        String
+  value       String
+  type        CredentialType
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  Node        Node[]
+}
+
+enum CredentialType { 
+  GEMINI_EXECUTION
+  CHATGPT_EXECUTION  // aka OPENAI
+  CLAUDE_EXECUTION  // aka ANTHROPIC
+}
+
 model Workflow { 
   id          String @id @default(cuid())
   name        String
@@ -98,9 +119,9 @@ model Workflow {
 enum NodeType { 
   INITIAL
   MANUAL_TRIGGER
-  HTTP_REQUEST
   GOOGLE_FORM_TRIGGER
   STRIPE_TRIGGER
+  HTTP_REQUEST_EXECUTION
   GEMINI_EXECUTION
   CHATGPT_EXECUTION  // aka OPENAI
   CLAUDE_EXECUTION  // aka ANTHROPIC
@@ -115,6 +136,10 @@ model Node {
   type              NodeType
   position          Json
   data              Json @default("{}")
+
+  credentialId      String?
+  credential        Credential? @relation(fields: [credentialId], references: [id]) 
+    // OnDelete: NoAction or SetNull? to prevent node deletion with credential deletion
 
   outputConnections Connection[] @relation("FromNode")
   inputConnections  Connection[] @relation("ToNode")
