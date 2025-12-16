@@ -1,9 +1,9 @@
 
-import { useTRPC } from "@/trpc/client";
-import { TRPCClientError } from "@trpc/client";
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { useWorkflowsParams } from "./use-workflows-params";
+import { useTRPC } from '@/trpc/client';
+import { TRPCClientError } from '@trpc/client';
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { useWorkflowsParams } from './use-workflows-params';
 
 
 /*
@@ -33,7 +33,7 @@ export const useCreateWorkflow = () => {
         );
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to create Workflow: ${error.message}`);
+        toast.error(`Failure: Failed to create Workflow, ${error.message}`);
       },
     }),
   );
@@ -55,14 +55,14 @@ export const useRemoveWorkflow = () => {
         );
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to delete Workflow: ${error.message}`);
+        toast.error(`Failure: Failed to delete Workflow, ${error.message}`);
       },
     }),
   );
 };
 
 /*
-** Hook to fetch a Workflow by id using Suspense
+** Hook to fetch a Workflow by ID using Suspense
 */
 export const useSuspenseWorkflow = (id: string) => { 
   const trpc = useTRPC();
@@ -86,7 +86,7 @@ export const useRenameWorkflow = () => { // aka useUpdateWorkflowName
         );
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to rename Workflow: ${error.message}`);
+        toast.error(`Failure: Failed to rename Workflow, ${error.message}`);
       },
     }),
   );
@@ -108,7 +108,7 @@ export const useUpdateWorkflow = () => {
         );
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to save Workflow: ${error.message}`);
+        toast.error(`Failure: Failed to save Workflow, ${error.message}`);
       },
     }),
   );
@@ -126,7 +126,7 @@ export const useExecuteWorkflow = () => {
         toast.success(`Success: Workflow "${data.name}" executed`); 
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to execute Workflow: ${error.message}`);
+        toast.error(`Failure: Failed to execute Workflow, ${error.message}`);
       },
     }),
   );

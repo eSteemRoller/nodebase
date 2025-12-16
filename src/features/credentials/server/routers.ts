@@ -37,7 +37,7 @@ export const credentialsRouter = createTRPCRouter({
       });
   }),
   //  ReactFlow begin:
-  updateWorkflow: protectedProcedure  // aka update
+  updateCredential: protectedProcedure  // aka update
     .input(
       z.object({ 
         id: z.string(), 
