@@ -2,7 +2,7 @@
 import { Suspense } from 'react';
 import { requireAuth } from '@/lib/auth-utils';
 import { HydrateClient, prefetch } from '@/trpc/server';
-import { prefetchWorkflows } from '@/features/workflows/server/prefetch';
+import { prefetchAllWorkflows } from '@/features/workflows/server/prefetch';
 import { ErrorBoundary } from 'react-error-boundary';
 import { WorkflowsContainer, WorkflowsError, WorkflowsList, WorkflowsLoading } from '@/features/workflows/components/workflows';
 import type { SearchParams } from 'nuqs/server';
@@ -17,7 +17,7 @@ const Page = async ({ searchParams }: Props) => {
   await requireAuth();
 
   const params = await workflowsParamsLoader(searchParams);
-  prefetchWorkflows(params);
+  prefetchAllWorkflows(params);
 
   return ( 
     <WorkflowsContainer>

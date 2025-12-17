@@ -20,7 +20,6 @@ import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import { UseEntitySearch } from "../hooks/use-entity-search";
 import type { Workflow } from "@/generated/prisma";
 import { WorkflowIcon } from "lucide-react";
-// import { WorkflowData, WorkflowsAll } from "../types";
 
 
 export const WorkflowsSearch = () => { 
@@ -144,7 +143,7 @@ export const WorkflowsEmpty = () => {
       {modal}
       <EmptyView 
         onNew={handleCreate}
-        message='No Workflows found or Created yet. Create your first Workflow or adjust your Search.'
+        message='No Workflows found or created yet. Create your first Workflow or adjust your search.'
       />
     </>
   );

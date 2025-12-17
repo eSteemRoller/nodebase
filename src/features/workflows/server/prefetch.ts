@@ -8,14 +8,14 @@ import { prefetch, trpc } from "@/trpc/server";
 type Input = inferInput<typeof trpc.workflows.getMany>;
 
 /*
-** Prefetch all Workflows util
+** Prefetch all Workflows
 */
-export const prefetchWorkflows = (params: Input) => { 
+export const prefetchAllWorkflows = (params: Input) => {  // aka prefetchWorkflows
   return prefetch(trpc.workflows.getMany.queryOptions(params));
 };
 
 /*
-** Prefetch a Workflow util
+** Prefetch a Workflow by ID
 */
 export const prefetchWorkflow = (id: string) => { 
   return prefetch(trpc.workflows.getOne.queryOptions({id}));
