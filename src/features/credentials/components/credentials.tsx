@@ -17,8 +17,9 @@ import {
 import { useRouter } from "next/navigation";
 import { useCredentialsParams } from "../hooks/use-credentials-params";
 import { UseEntitySearch } from "../hooks/use-entity-search";
-import type { Credential } from "@/generated/prisma";
-import { WorkflowIcon } from "lucide-react";
+import type { Credential  } from "@/generated/prisma";
+import { CredentialType } from "@/generated/prisma";
+import Image from 'next/image';
 
 
 export const CredentialsSearch = () => { 
@@ -117,6 +118,12 @@ export const CredentialsEmpty = () => {
   );
 };
 
+const credentialLogos: Record<CredentialType, string> = { 
+  [CredentialType.CHATGPT_EXECUTION]: '/logos/chatgpt.svg',
+  [CredentialType.CLAUDE_EXECUTION]: '/logos/chatgpt.svg',
+  [CredentialType.GEMINI_EXECUTION]: '/logos/chatgpt.svg'
+};
+
 export const CredentialItem = ({ 
   data,
 
@@ -128,6 +135,8 @@ export const CredentialItem = ({
     const handleRemove = () => { 
       removeCredential.mutate({ id: data.id });
     }
+  
+  const logo = credentialLogos[data.type] || '/logos/gemini.svg';  // aka /openai.svg
 
   return ( 
     <EntityItem 
@@ -142,7 +151,7 @@ export const CredentialItem = ({
       }
       image={ 
         <div className="size-8 flex justify-center items-center">
-          <WorkflowIcon className="size-5 text-muted-foreground" />
+          <Image src={logo} alt={data.type} width={20} height={20} />
         </div>
       }
       onRemove={handleRemove}
