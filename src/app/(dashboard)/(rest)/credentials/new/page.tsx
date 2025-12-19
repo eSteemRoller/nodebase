@@ -3,9 +3,6 @@ import { CredentialForm } from "@/features/credentials/components/credential";
 import { requireAuth } from "@/lib/auth-utils";
 
 
-
-
-
 const Page = async () => { 
   await requireAuth();
 

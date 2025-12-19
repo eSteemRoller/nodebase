@@ -74,7 +74,7 @@ export const WorkflowsHeader = ({ disabled } : { disabled?: boolean }) => {
       {modal}
       <EntityHeader 
         title="Workflows"
-        description="Create and Edit your Workflows"
+        description="Create and edit your Workflows"
         onNew={handleCreate}
         newButtonLabel="New Workflow"
         disabled={disabled}

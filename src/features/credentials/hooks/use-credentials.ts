@@ -3,6 +3,7 @@ import { useTRPC } from '@/trpc/client';
 import { TRPCClientError } from '@trpc/client';
 import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 import { useCredentialsParams } from './use-credentials-params';
 import { CredentialType } from '@/generated/prisma';
 
@@ -24,17 +25,19 @@ export const useSuspenseCredentials = () => {
 export const useCreateCredential = () => { 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation(
     trpc.credentials.create.mutationOptions({ 
       onSuccess: (data) => { 
-        toast.success(`Success: New Credential, "${data.name}," has been created`); 
+        toast.success(`Success: New Credential "${data.name}" has been created`); 
         queryClient.invalidateQueries( 
           trpc.credentials.getMany.queryOptions({}),
         );
+        router.push('/credentials/');
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to create Credential, ${error.message}`);
+        toast.error(`Failure: Failed to create Credential ${error.message}`);
       },
     }),
   );
@@ -46,17 +49,19 @@ export const useCreateCredential = () => {
 export const useRemoveCredential = () => { 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation( 
     trpc.credentials.delete.mutationOptions({ 
       onSuccess: (data) => { 
-        toast.success(`Success: Credential, "${data.name}," has been deleted`); 
+        toast.success(`Success: Credential "${data.name}" has been deleted`); 
         queryClient.invalidateQueries( 
           trpc.credentials.getOne.queryFilter({ id: data.id }),
         );
+        router.push('/credentials/');
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to delete Credential, ${error.message}`);
+        toast.error(`Failure: Failed to delete Credential ${error.message}`);
       },
     }),
   );
@@ -77,6 +82,7 @@ export const useSuspenseCredential = (id: string) => {
 export const useUpdateCredential = () => { 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation(
     trpc.credentials.updateCredential.mutationOptions({  // aka credentials.update
@@ -85,9 +91,10 @@ export const useUpdateCredential = () => {
         queryClient.invalidateQueries( 
           trpc.credentials.getOne.queryOptions({ id: data.id }),
         );
+        router.push('/credentials/');
       },
       onError: (error) => { 
-        toast.error(`Failure: Failed to save Credential, ${error.message}`);
+        toast.error(`Failure: Failed to save Credential ${error.message}`);
       },
     }),
   );

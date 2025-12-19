@@ -99,7 +99,7 @@ export const ChatGptExecutionDialog = ({
             OpenAI ChatGPT AI Configuration
           </DialogTitle>
           <DialogDescription>
-            Configure the AI model and prompt for this ChatGPT AI execution node.
+            Configure the name, credential, and prompt for this ChatGPT AI execution node.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

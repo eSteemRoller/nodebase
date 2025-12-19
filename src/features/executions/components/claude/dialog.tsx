@@ -99,7 +99,7 @@ export const ClaudeExecutionDialog = ({
             Anthropic Claude AI Configuration
           </DialogTitle>
           <DialogDescription>
-            Configure the AI model and prompt for this Claude AI execution node.
+            Configure the name, credential, and prompt for this Claude AI execution node.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

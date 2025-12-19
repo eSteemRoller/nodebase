@@ -3,7 +3,7 @@
 
 import { CredentialType } from '@/generated/prisma';
 import Image from 'next/image';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useCreateCredential, useUpdateCredential, useSuspenseCredential } from '../hooks/use-credentials';
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useForm } from 'react-hook-form';
@@ -98,9 +98,9 @@ export const CredentialForm = ({
       })
     } else { 
       await createCredential.mutateAsync(values, { 
-        // onSuccess: (data) => { 
-        //   router.push(`/credentials/${data.id}`)
-        // },
+        onSuccess: (data) => { 
+          router.push('/credentials/');
+        },
         onError: (error) => { 
           handleError(error);
         }
@@ -219,4 +219,12 @@ export const CredentialForm = ({
       </Card>
     </>
   )
+};
+
+export const CredentialView = ({ 
+  credentialId,
+}: { credentialId: string }) => { 
+  const { data: credential } = useSuspenseCredential(credentialId);
+
+  return <CredentialForm initialData={credential} />
 };

@@ -57,7 +57,7 @@ export const CredentialsHeader = ({ disabled } : { disabled?: boolean }) => {
   return ( 
     <EntityHeader 
       title="Credentials"
-      description="Create and Edit your Credentials"
+      description="Create and edit your Credentials"
       newButtonHref='/credentials/new'
       newButtonLabel="New Credential"
       disabled={disabled}
@@ -120,8 +120,8 @@ export const CredentialsEmpty = () => {
 
 const credentialLogos: Record<CredentialType, string> = { 
   [CredentialType.CHATGPT_EXECUTION]: '/logos/chatgpt.svg',
-  [CredentialType.CLAUDE_EXECUTION]: '/logos/chatgpt.svg',
-  [CredentialType.GEMINI_EXECUTION]: '/logos/chatgpt.svg'
+  [CredentialType.CLAUDE_EXECUTION]: '/logos/claude.svg',
+  [CredentialType.GEMINI_EXECUTION]: '/logos/gemini.svg'
 };
 
 export const CredentialItem = ({ 
