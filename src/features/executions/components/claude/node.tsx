@@ -12,6 +12,7 @@ import { CLAUDE_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/claude';
 
 type ClaudeExecutionNodeData = {  // aka OpenAINodeData
   variableName?: string;
+  credentialId?: string;
   systemPrompt?: string;
   userPrompt?: string;
   // [key: string]: unknown;

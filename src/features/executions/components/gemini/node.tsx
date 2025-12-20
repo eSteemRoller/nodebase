@@ -12,6 +12,7 @@ import { GEMINI_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/gemini';
 
 type GeminiExecutionNodeData = { 
   variableName?: string;
+  credentialId?: string;
   systemPrompt?: string;
   userPrompt?: string;
   // [key: string]: unknown;

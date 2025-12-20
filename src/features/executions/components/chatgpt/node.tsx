@@ -12,6 +12,7 @@ import { CHATGPT_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/chatgpt';
 
 type ChatGptExecutionNodeData = {  // aka OpenAINodeData
   variableName?: string;
+  credentialId?: string;
   systemPrompt?: string;
   userPrompt?: string;
   // [key: string]: unknown;

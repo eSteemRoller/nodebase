@@ -5,6 +5,7 @@ import { generateText } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import Handlebars from 'handlebars';
 import { chatGptExecutionChannel } from '@/inngest/channels/chatgpt';
+import prisma from '@/lib/db';
 
 
 Handlebars.registerHelper('json', (context) => {
@@ -17,13 +18,14 @@ Handlebars.registerHelper('json', (context) => {
   }
 });
 
-type chatGptExecutionData = { 
+type ChatGptExecutionData = { 
   variableName?: string;
+  credentialId?: string;
   systemPrompt?: string;
   userPrompt: string;
 };
 
-export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = async({ 
+export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = async({ 
   data,
   nodeId,
   context,
@@ -44,8 +46,32 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = asyn
         status: 'error',
       }),
     );
-    throw new NonRetriableError("ChatGPT AI Execution node: Variable Name is missing");
+    throw new NonRetriableError("ChatGPT AI Execution node: Variable Name is required");
   }
+
+  const credential = await step.run('get-credential', () => { 
+    return prisma.credential.findUnique({ 
+      where: { 
+        id: data.credentialId,
+      },
+    });
+  });
+
+  if (!credential) { 
+    await publish( 
+      chatGptExecutionChannel().status({ 
+        nodeId,
+        status: 'error',
+      }),
+    );
+    throw new NonRetriableError("Gemini AI Execution node: Credential (API Key) is required");
+  }
+
+  if (!credential) { 
+    throw new NonRetriableError("Gemini AI Execution node: Credential (API Key) not found");
+  }
+
+  // const credentialValue = process.env.OPENAI_API_KEY!;
 
   if (!data.userPrompt) { 
     await publish( 
@@ -54,23 +80,16 @@ export const chatGptExecutionExecutor: NodeExecutor<chatGptExecutionData> = asyn
         status: 'error',
       }),
     );
-    throw new NonRetriableError("ChatGPT AI Execution node: User prompt is missing");
+    throw new NonRetriableError("ChatGPT AI Execution node: User prompt is required");
   }
 
-  // To Do: Throw error if credential is missing
-
-  
   const systemPrompt = data.systemPrompt
     ? Handlebars.compile(data.systemPrompt)(context)
     : "You are a helpful assistant.";
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
 
-  // To Do: Fetch credential that user selected
-
-  const credentialValue = process.env.OPENAI_API_KEY!;
-
   const openAi = createOpenAI({ 
-    apiKey: credentialValue,
+    apiKey: credential.value,
   });
 
   try {

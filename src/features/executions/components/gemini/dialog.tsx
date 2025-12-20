@@ -152,7 +152,7 @@ export const GeminiExecutionDialog = ({
               name='credentialId'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gemini Credential</FormLabel>
+                  <FormLabel>Gemini AI Credential (API Key)</FormLabel>
                   <Select 
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -163,7 +163,7 @@ export const GeminiExecutionDialog = ({
                   >
                     <FormControl>
                       <SelectTrigger className='w-full'>
-                        <SelectValue placeholder="Select a Credential" />
+                        <SelectValue placeholder="Select a Credential (API Key)" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

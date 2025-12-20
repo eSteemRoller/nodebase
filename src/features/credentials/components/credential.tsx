@@ -118,8 +118,8 @@ export const CredentialForm = ({
           </CardTitle>
           <CardDescription>
             {isEdit 
-              ? "Edit your API key (Credential) details"
-              : "Add a new API key (Credential) to your account"
+              ? "Edit your API Key details"
+              : "Add a new API Key to your account"
             }
           </CardDescription>
         </CardHeader>

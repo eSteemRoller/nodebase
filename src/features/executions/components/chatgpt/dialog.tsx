@@ -25,6 +25,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { useCredentialsByType } from '@/features/credentials/hooks/use-credentials';
+import { CredentialType } from '@/generated/prisma';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
+import Image from 'next/image';
 
 
 
@@ -35,6 +45,9 @@ const formSchema = z.object({
     .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { 
       message: "Variable Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
     }),
+  credentialId: z 
+      .string()
+      .min(1, "Credential is required"),
   systemPrompt: z
     .string()
     .optional(),
@@ -59,10 +72,16 @@ export const ChatGptExecutionDialog = ({
   onSubmit,
   defaultValues = {},
 }: Props) => { 
+  const { 
+    data: credentials,
+    isLoading: isLoadingCredentials,
+  } = useCredentialsByType(CredentialType.CHATGPT_EXECUTION);
+
   const form = useForm<z.infer<typeof formSchema>>({ 
     resolver: zodResolver(formSchema),
     defaultValues: { 
       variableName: defaultValues.variableName || '',
+      credentialId: defaultValues.credentialId || '',
       systemPrompt: defaultValues.systemPrompt || '',
       userPrompt: defaultValues.userPrompt || '',
     },
@@ -73,6 +92,7 @@ export const ChatGptExecutionDialog = ({
     if (open) { 
       form.reset({ 
         variableName: defaultValues.variableName || '',
+        credentialId: defaultValues.credentialId || '',
         systemPrompt: defaultValues.systemPrompt || '',
         userPrompt: defaultValues.userPrompt || '',
       });
@@ -124,6 +144,48 @@ export const ChatGptExecutionDialog = ({
                     <p>Example: </p> 
                     <p>{`{{${watchVariableName}.text}}`}</p> {/* To Do: what's the Inngest output? */}
                   </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name='credentialId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>ChatGPT AI Credential (API Key)</FormLabel>
+                  <Select 
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={ 
+                      isLoadingCredentials ||
+                        !credentials?.length
+                    }
+                  >
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder="Select a Credential (API Key)" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {credentials?.map((credential) => ( 
+                        <SelectItem 
+                          key={credential.id}
+                          value={credential.id}
+                        >
+                          <div className='flex items-center gap-2'>
+                            <Image 
+                              src='/logos/chatgpt.svg'
+                              alt="ChatGPT AI"
+                              width={16}
+                              height={16}
+                            />
+                            {credential.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
