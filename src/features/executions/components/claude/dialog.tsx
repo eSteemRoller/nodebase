@@ -37,7 +37,6 @@ import {
 import Image from 'next/image';
 
 
-
 const formSchema = z.object({ 
   variableName: z
     .string()

@@ -68,10 +68,14 @@ export const geminiExecutionExecutor: NodeExecutor<GeminiExecutionData> = async(
   }
 
   if (!credential) { 
+    await publish( 
+      geminiExecutionChannel().status({ 
+        nodeId,
+        status: 'error',
+      }),
+    );
     throw new NonRetriableError("Gemini AI Execution node: Credential (API Key) not found");
   }
-
-  // const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
 
   const systemPrompt = data.systemPrompt
     ? Handlebars.compile(data.systemPrompt)(context)
@@ -87,6 +91,8 @@ export const geminiExecutionExecutor: NodeExecutor<GeminiExecutionData> = async(
     );
     throw new NonRetriableError("Gemini AI Execution node: User prompt is required");
   }
+
+    // const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
 
   const google = createGoogleGenerativeAI({ 
     apiKey: credential.value,

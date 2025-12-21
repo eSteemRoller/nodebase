@@ -50,9 +50,10 @@ export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = asyn
   }
 
   const credential = await step.run('get-credential', () => { 
-    return prisma.credential.findUnique({ 
+    return prisma.credential.findFirst({ 
       where: { 
         id: data.credentialId,
+        // userId: context.userId,
       },
     });
   });
@@ -68,10 +69,14 @@ export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = asyn
   }
 
   if (!credential) { 
+    await publish( 
+      chatGptExecutionChannel().status({ 
+        nodeId,
+        status: 'error',
+      }),
+    );
     throw new NonRetriableError("Gemini AI Execution node: Credential (API Key) not found");
   }
-
-  // const credentialValue = process.env.OPENAI_API_KEY!;
 
   if (!data.userPrompt) { 
     await publish( 
@@ -87,6 +92,8 @@ export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = asyn
     ? Handlebars.compile(data.systemPrompt)(context)
     : "You are a helpful assistant.";
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
+
+  // const credentialValue = process.env.OPENAI_API_KEY!;
 
   const openAi = createOpenAI({ 
     apiKey: credential.value,

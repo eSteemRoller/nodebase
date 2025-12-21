@@ -68,10 +68,14 @@ export const claudeExecutionExecutor: NodeExecutor<ClaudeExecutionData> = async(
   }
 
   if (!credential) { 
+    await publish( 
+      claudeExecutionChannel().status({ 
+        nodeId,
+        status: 'error',
+      }),
+    );
     throw new NonRetriableError("Gemini AI Execution node: Credential (API Key) not found");
   }
-
-  // const credentialValue = process.env.ANTHROPIC_API_KEY!;
 
   if (!data.userPrompt) { 
     await publish( 
@@ -87,6 +91,8 @@ export const claudeExecutionExecutor: NodeExecutor<ClaudeExecutionData> = async(
     ? Handlebars.compile(data.systemPrompt)(context)
     : "You are a helpful assistant.";
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
+
+  // const credentialValue = process.env.ANTHROPIC_API_KEY!;
 
   const anthropic = createAnthropic({ 
     apiKey: credential.value,
