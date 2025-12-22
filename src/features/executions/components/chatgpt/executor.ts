@@ -26,6 +26,7 @@ type ChatGptExecutionData = {
 };
 
 export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = async({ 
+  userId,
   data,
   nodeId,
   context,
@@ -52,8 +53,8 @@ export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = asyn
   const credential = await step.run('get-credential', () => { 
     return prisma.credential.findFirst({ 
       where: { 
+        userId,
         id: data.credentialId,
-        // userId: context.userId,
       },
     });
   });

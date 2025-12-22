@@ -51,6 +51,17 @@ export const executeWorkflow = inngest.createFunction(
       return topologicalSort(workflow.nodes, workflow.connections);
     });
 
+    const userId = await step.run('find-user-id', async () => { 
+      const workflow = await prisma.workflow.findUniqueOrThrow({ 
+        where: { id: workflowId },
+        select: { 
+          userId: true,
+        },
+      });
+
+      return workflow.userId;
+    })
+
     // Initialize context with any initial data from the trigger
     let context = event.data.initialData || {};
 
@@ -65,7 +76,8 @@ export const executeWorkflow = inngest.createFunction(
       // behavior while avoiding overly strict compile-time checks. For
       // higher safety, validate `node.data` shape per node.type before
       // invoking the executor.
-      context = await executor({
+      context = await executor({ 
+        userId,
         data: node.data as any,
         nodeId: node.id,
         context,

@@ -26,6 +26,7 @@ type ClaudeExecutionData = {
 };
 
 export const claudeExecutionExecutor: NodeExecutor<ClaudeExecutionData> = async({ 
+  userId,
   data,
   nodeId,
   context,
@@ -52,6 +53,7 @@ export const claudeExecutionExecutor: NodeExecutor<ClaudeExecutionData> = async(
   const credential = await step.run('get-credential', () => { 
     return prisma.credential.findUnique({ 
       where: { 
+        userId,
         id: data.credentialId,
       },
     });
