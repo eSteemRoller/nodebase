@@ -13,6 +13,7 @@ import { stripeTriggerChannel } from './channels/stripe-trigger';
 import { geminiExecutionChannel } from './channels/gemini';
 import { chatGptExecutionChannel } from './channels/chatgpt';
 import { claudeExecutionChannel } from './channels/claude';
+import { discordExecutionChannel } from './channels/discord';
 
 
 export const executeWorkflow = inngest.createFunction(
@@ -30,6 +31,7 @@ export const executeWorkflow = inngest.createFunction(
       geminiExecutionChannel(),
       chatGptExecutionChannel(),
       claudeExecutionChannel(),
+      discordExecutionChannel(),
     ]
   },
   async ({ event, step, publish }) => { 

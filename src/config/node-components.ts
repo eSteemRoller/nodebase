@@ -10,6 +10,7 @@ import { StripeTriggerNode } from '@/features/triggers/components/stripe-trigger
 import { GeminiExecutionNode } from '@/features/executions/components/gemini/node';
 import { ChatGptExecutionNode } from '@/features/executions/components/chatgpt/node';
 import { ClaudeExecutionNode } from '@/features/executions/components/claude/node';
+import { DiscordExecutionNode } from '@/features/executions/components/discord/node';
 
 
 export const nodeComponents = { 
@@ -21,6 +22,7 @@ export const nodeComponents = {
   [NodeType.GEMINI_EXECUTION]: GeminiExecutionNode,  // aka .GEMINI]: GeminiNode
   [NodeType.CHATGPT_EXECUTION]: ChatGptExecutionNode,  // aka .OPENAI]: OpenAiNode
   [NodeType.CLAUDE_EXECUTION]: ClaudeExecutionNode,  // aka .ANTHROPIC]: AnthropicNode
+  [NodeType.DISCORD_EXECUTION]: DiscordExecutionNode,  // aka .DISCORD]: DiscordNode
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof nodeComponents;

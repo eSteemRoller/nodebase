@@ -17,7 +17,7 @@ Handlebars.registerHelper('json', (context) => {
 });
 
 type HttpRequestData = { 
-  variableName?: string;
+  variableNodeName?: string;
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   endpoint?: string;
   body?: string;
@@ -41,14 +41,14 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
   try {
     const result = await step.run('http-request', async () => { 
 
-      if (!data.variableName) { 
+      if (!data.variableNodeName) { 
         await publish( 
           httpRequestChannel().status({ 
             nodeId,
             status: 'error',
           }),
         );
-        throw new NonRetriableError("HTTP Request node: No Variable Name configured.");
+        throw new NonRetriableError("HTTP Request node: No Variable Node Name configured.");
       };
 
       if (!data.method) { 
@@ -101,7 +101,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async({
 
       return {
         ...context,
-        [data.variableName]: responsePayload,
+        [data.variableNodeName]: responsePayload,
       }
     });
 

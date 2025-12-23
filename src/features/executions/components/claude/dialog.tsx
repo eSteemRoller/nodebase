@@ -38,11 +38,11 @@ import Image from 'next/image';
 
 
 const formSchema = z.object({ 
-  variableName: z
+  variableNodeName: z
     .string()
-    .min(1, { message: "Variable Name is required" })
+    .min(1, { message: "Variable Node Name is required" })
     .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { 
-      message: "Variable Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
+      message: "Variable Node Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
     }),
   credentialId: z 
       .string()
@@ -79,7 +79,7 @@ export const ClaudeExecutionDialog = ({
   const form = useForm<z.infer<typeof formSchema>>({ 
     resolver: zodResolver(formSchema),
     defaultValues: { 
-      variableName: defaultValues.variableName || '',
+      variableNodeName: defaultValues.variableNodeName || '',
       credentialId: defaultValues.credentialId || '',
       systemPrompt: defaultValues.systemPrompt || '',
       userPrompt: defaultValues.userPrompt || '',
@@ -90,7 +90,7 @@ export const ClaudeExecutionDialog = ({
   useEffect(() => { 
     if (open) { 
       form.reset({ 
-        variableName: defaultValues.variableName || '',
+        variableNodeName: defaultValues.variableNodeName || '',
         credentialId: defaultValues.credentialId || '',
         systemPrompt: defaultValues.systemPrompt || '',
         userPrompt: defaultValues.userPrompt || '',
@@ -102,7 +102,7 @@ export const ClaudeExecutionDialog = ({
     form 
   ]);
 
-  const watchVariableName = form.watch('variableName') || "myClaudeName";
+  const watchVariableNodeName = form.watch('variableNodeName') || "myClaudeNodeName";
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => 
   { 
@@ -128,20 +128,20 @@ export const ClaudeExecutionDialog = ({
           >
             <FormField 
               control={form.control}
-              name='variableName'
+              name='variableNodeName'
               render={({ field }) => ( 
                 <FormItem>
-                  <FormLabel>Variable Name</FormLabel>
+                  <FormLabel>Variable Node Name</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="myClaudeName"
+                      placeholder="myClaudeNodeName"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    <p>You can use a unique Variable Name dynamically to reference this node in other nodes.</p>
+                    <p>You can use a unique Variable Node Name dynamically to reference this node in other nodes.</p>
                     <p>Example: </p> 
-                    <p>{`{{${watchVariableName}.text}}`}</p> {/* To Do: what's the Inngest output? */}
+                    <p>{`{{${watchVariableNodeName}.text}}`}</p> {/* To Do: what's the Inngest output? */}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

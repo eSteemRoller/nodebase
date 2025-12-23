@@ -2,40 +2,37 @@
 'use client';
 
 import { useReactFlow, type Node, type NodeProps } from '@xyflow/react';
-import { GlobeIcon } from 'lucide-react';
 import { memo, useState } from 'react';
 import { BaseExecutionNode } from '@/features/executions/components/base-execution-node';
-import { HttpRequestFormValues, HttpRequestDialog } from './dialog';
+import { DiscordExecutionFormValues, DiscordExecutionDialog } from './dialog';
 import { useNodeStatus } from '../../hooks/use-node-status';
-import { fetchHttpRequestRealtimeToken } from './actions';
-import { HTTP_REQUEST_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/http-request';
+import { fetchDiscordExecutionRealtimeToken } from './actions';
+import { DISCORD_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/discord';
 
 
-type HttpRequestNodeData = { 
-  variableNodeName?: string;
-  endpoint?: string;
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: string;
-  // [key: string]: unknown;
+type DiscordExecutionNodeData = { 
+  webhookUrl?: string;
+  content?: string;
+  username?: string;
 };
 
-type HttpRequestNodeType = Node<HttpRequestNodeData>;
+type DiscordExecutionNodeType = Node<DiscordExecutionNodeData>;
 
-export const HttpRequestNode = memo(
-  (props: NodeProps<HttpRequestNodeType>) => { 
+export const DiscordExecutionNode = memo(
+  (props: NodeProps<DiscordExecutionNodeType>) => { 
     const [dialogOpen, setDialogOpen] = useState(false);
     const { setNodes } = useReactFlow();
 
   const nodeStatus = useNodeStatus({ 
     nodeId: props.id,
-    channel: HTTP_REQUEST_EXECUTION_CHANNEL_NAME,
+    channel: DISCORD_EXECUTION_CHANNEL_NAME,
     topic: 'status',
-    refreshToken: fetchHttpRequestRealtimeToken,
+    refreshToken: fetchDiscordExecutionRealtimeToken,
   });
 
   const handleOpenSettings = () => setDialogOpen(true);
 
-  const handleSubmit = (values: HttpRequestFormValues) => { 
+  const handleSubmit = (values: DiscordExecutionFormValues) => { 
     setNodes((nodes) => nodes.map((node) => { 
       if (node.id == props.id) { 
         return { 
@@ -51,17 +48,14 @@ export const HttpRequestNode = memo(
   };
   
   const nodeData = props.data;
-  const descriptionName = nodeData?.variableNodeName
-    ? `Name: ${nodeData.variableNodeName}`
-    : "Unnamed";
-  const descriptionMethod = nodeData?.endpoint  // aka const description
-    ? `${nodeData.method || 'GET'}: ${nodeData.endpoint}`
+  const description = nodeData?.content  // aka const description
+    ? `Send: ${nodeData.content
+        .slice(0, 50)}...`
     : "Not configured";
-  
 
   return ( 
     <>
-      <HttpRequestDialog 
+      <DiscordExecutionDialog 
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
@@ -70,10 +64,10 @@ export const HttpRequestNode = memo(
       <BaseExecutionNode 
         {...props}
         id={props.id}
-        icon={GlobeIcon}
-        name="HTTP Request"
+        icon='/logos/discord.svg'
+        name="Discord"
         status={nodeStatus}
-        description={descriptionMethod} // {descriptionName}
+        description={description}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
       />
@@ -81,4 +75,4 @@ export const HttpRequestNode = memo(
   )
 });
 
-HttpRequestNode.displayName = "HttpRequestNode";
+DiscordExecutionNode.displayName = "DiscordExecutionNode";

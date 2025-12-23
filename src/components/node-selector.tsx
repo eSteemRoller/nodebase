@@ -75,6 +75,12 @@ const executionNodes: NodeTypeOption[] = [
     description: "Prompts OpenAI Claude AI to answer questions",
     icon: '/logos/claude.svg',
   },
+  {
+    type: NodeType.DISCORD_EXECUTION,  // aka DISCORD
+    label: "Discord",
+    description: "Post a message on a Discord server",
+    icon: '/logos/discord.svg',
+  },
 ];
 
 interface NodeSelectorProps { 

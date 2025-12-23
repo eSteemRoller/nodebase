@@ -35,11 +35,11 @@ import { Button } from '@/components/ui/button';
 
 
 const formSchema = z.object({ 
-  variableName: z
+  variableNodeName: z
     .string()
-    .min(1, { message: "Variable Name is required" })
+    .min(1, { message: "Variable Node Name is required" })
     .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { 
-      message: "Variable Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
+      message: "Variable Node Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
     }),
   endpoint: z
     .string()
@@ -72,7 +72,7 @@ export const HttpRequestDialog = ({
   const form = useForm<z.infer<typeof formSchema>>({ 
     resolver: zodResolver(formSchema),
     defaultValues: { 
-      variableName: defaultValues.variableName || '',
+      variableNodeName: defaultValues.variableNodeName || '',
       endpoint: defaultValues.endpoint || '',
       method: defaultValues.method || 'GET',
       body: defaultValues.body || '',
@@ -83,7 +83,7 @@ export const HttpRequestDialog = ({
   useEffect(() => { 
     if (open) { 
       form.reset({ 
-      variableName: defaultValues.variableName || '',
+      variableNodeName: defaultValues.variableNodeName || '',
       endpoint: defaultValues.endpoint || '',
       method: defaultValues.method || 'GET',
       body: defaultValues.body || '',
@@ -95,7 +95,7 @@ export const HttpRequestDialog = ({
     form 
   ]);
 
-  const watchVariableName = form.watch('variableName') || "myApiCallName";
+  const watchVariableNodeName = form.watch('variableNodeName') || "myApiCallNodeName";
   const watchMethod = form.watch('method');
   const showBodyField = ['POST', 'PUT', 'PATCH']
     .includes(watchMethod);
@@ -124,20 +124,20 @@ export const HttpRequestDialog = ({
           >
             <FormField 
               control={form.control}
-              name='variableName'
+              name='variableNodeName'
               render={({ field }) => ( 
                 <FormItem>
-                  <FormLabel>Variable Name</FormLabel>
+                  <FormLabel>Variable Node Name</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="myApiCallName"
+                      placeholder="myApiCallNodeName"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    <p>You can use a unique Variable Name dynamically to reference this node in other nodes.</p>
+                    <p>You can use a unique Variable Node Name dynamically to reference this node in other nodes.</p>
                     <p>Example: </p> 
-                    <p>{`{{${watchVariableName}.httpResponse.data}}`}</p>
+                    <p>{`{{${watchVariableNodeName}.httpResponse.data}}`}</p>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

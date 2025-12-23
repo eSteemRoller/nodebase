@@ -19,7 +19,7 @@ Handlebars.registerHelper('json', (context) => {
 });
 
 type ChatGptExecutionData = { 
-  variableName?: string;
+  variableNodeName?: string;
   credentialId?: string;
   systemPrompt?: string;
   userPrompt: string;
@@ -40,14 +40,14 @@ export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = asyn
     }),
   );
 
-  if (!data.variableName) { 
+  if (!data.variableNodeName) { 
     await publish( 
       chatGptExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
     );
-    throw new NonRetriableError("ChatGPT AI Execution node: Variable Name is required");
+    throw new NonRetriableError("ChatGPT AI Execution node: Variable Node Name is required");
   }
 
   const credential = await step.run('get-credential', () => { 
@@ -130,7 +130,7 @@ export const chatGptExecutionExecutor: NodeExecutor<ChatGptExecutionData> = asyn
 
     return { 
       ...context,
-      [data.variableName]: { 
+      [data.variableNodeName]: { 
         text,
       },
     }

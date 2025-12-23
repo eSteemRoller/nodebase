@@ -25,16 +25,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { useCredentialsByType } from '@/features/credentials/hooks/use-credentials';
-import { CredentialType } from '@/generated/prisma';
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
-import Image from 'next/image';
 
 
 const formSchema = z.object({ 
@@ -44,45 +34,41 @@ const formSchema = z.object({
     .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { 
       message: "Variable Node Name must start with a letter or underscore and contain only letters, underscores, or numbers.",
     }),
-  credentialId: z 
-    .string()
-    .min(1, "Credential is required"),
-  systemPrompt: z
+  username: z
     .string()
     .optional(),
-  userPrompt: z 
+  content: z
     .string()
-    .min(1, "A user prompt is required"),
+    .min(1, "Message content is required")
+    .max(2000, "Discord messages cannot execeed 2000 characters"),
+  webhookUrl: z
+    .string()
+    .min(1, "Webhook URL is required")
 });
 
 
-export type GeminiExecutionFormValues = z.infer<typeof formSchema>;
+export type DiscordExecutionFormValues = z.infer<typeof formSchema>;
 
 interface Props { 
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
-  defaultValues?: Partial<GeminiExecutionFormValues>;
+  defaultValues?: Partial<DiscordExecutionFormValues>;
 };
 
-export const GeminiExecutionDialog = ({ 
+export const DiscordExecutionDialog = ({ 
   open,
   onOpenChange,
   onSubmit,
   defaultValues = {},
 }: Props) => { 
-  const { 
-    data: credentials,
-    isLoading: isLoadingCredentials,
-  } = useCredentialsByType(CredentialType.GEMINI_EXECUTION);
-
   const form = useForm<z.infer<typeof formSchema>>({ 
     resolver: zodResolver(formSchema),
     defaultValues: { 
       variableNodeName: defaultValues.variableNodeName || '',
-      credentialId: defaultValues.credentialId || '',
-      systemPrompt: defaultValues.systemPrompt || '',
-      userPrompt: defaultValues.userPrompt || '',
+      username: defaultValues.username || '',
+      content: defaultValues.content || '',
+      webhookUrl: defaultValues.webhookUrl || '',
     },
   });
 
@@ -91,9 +77,9 @@ export const GeminiExecutionDialog = ({
     if (open) { 
       form.reset({ 
         variableNodeName: defaultValues.variableNodeName || '',
-        credentialId: defaultValues.credentialId || '',
-        systemPrompt: defaultValues.systemPrompt || '',
-        userPrompt: defaultValues.userPrompt || '',
+        username: defaultValues.username || '',
+        content: defaultValues.content || '',
+        webhookUrl: defaultValues.webhookUrl || '',
       });
     }
   }, [ 
@@ -102,7 +88,7 @@ export const GeminiExecutionDialog = ({
     form 
   ]);
 
-  const watchVariableNodeName = form.watch('variableNodeName') || "myGeminiNodeName";
+  const watchVariableNodeName = form.watch('variableNodeName') || "myDiscordNodeName";
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => 
   { 
@@ -115,10 +101,10 @@ export const GeminiExecutionDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Google Gemini AI Configuration
+            Discord Configuration
           </DialogTitle>
           <DialogDescription>
-            Configure the name, credential, and prompt for this Gemini AI execution node.
+            Configure the Discord webhook settings for this execution node.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -134,7 +120,7 @@ export const GeminiExecutionDialog = ({
                   <FormLabel>Variable Node Name</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="myGeminiNodeName"
+                      placeholder="myDiscordNodeName"
                       {...field}
                     />
                   </FormControl>
@@ -149,63 +135,19 @@ export const GeminiExecutionDialog = ({
             />
             <FormField 
               control={form.control}
-              name='credentialId'
+              name='webhookUrl'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gemini AI Credential (API Key)</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    disabled={ 
-                      isLoadingCredentials ||
-                        !credentials?.length
-                    }
-                  >
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder="Select a Credential (API Key)" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {credentials?.map((credential) => ( 
-                        <SelectItem 
-                          key={credential.id}
-                          value={credential.id}
-                        >
-                          <div className='flex items-center gap-2'>
-                            <Image 
-                              src='/logos/gemini.svg'
-                              alt="Gemini AI"
-                              width={16}
-                              height={16}
-                            />
-                            {credential.name}
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField 
-              control={form.control}
-              name='systemPrompt'
-              render={({ field }) => ( 
-                <FormItem>
-                  <FormLabel>System Prompt (Optional)</FormLabel>
+                  <FormLabel>Webhook URL</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="You are a helpful assistant. ..."
-                      className='min-h-[80px] font-mono text-sm'
+                    <Input
+                      placeholder="https://discord.com/api/webhooks/..."
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Guides the behavior of the AI.
-                    Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
-                     &nbsp;to stringify objects.
+                    URL created at Discord: Edit Channel →
+                      Integrations → Create Webhook → Copy Webhook URL
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -213,21 +155,40 @@ export const GeminiExecutionDialog = ({
             />
             <FormField 
               control={form.control}
-              name='userPrompt'
+              name='content'
               render={({ field }) => ( 
                 <FormItem>
-                  <FormLabel>User Prompt (Required)</FormLabel>
+                  <FormLabel>Post Content</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Summarize this text: {{json variable.text}}"
-                      className='min-h-[120px] font-mono text-sm'
+                      placeholder="Examples: Summary: {{aiResponse}}, Summary: {{myGemini.text}}..."
+                      className='min-h-[80px] font-mono text-sm'
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    The prompt to send to the AI.
+                    The message and/or text in your post.
                     Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
-                     &nbsp;to stringify objects.
+                      &nbsp;to stringify objects.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name='username'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Bot Username (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Your Workflow Bot's Name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    This will override the webhook's default username
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

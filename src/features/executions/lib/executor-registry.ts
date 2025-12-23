@@ -6,6 +6,7 @@ import { googleFormTriggerExecutor } from '@/features/triggers/components/google
 import { stripeTriggerExecutor } from '@/features/triggers/components/stripe-trigger/executor';
 import { geminiExecutionExecutor } from '../components/gemini/executor';
 import { chatGptExecutionExecutor } from '../components/chatgpt/executor';
+import { discordExecutionExecutor } from '../components/discord/executor';
 
 
 type ExecutorMap = {
@@ -17,6 +18,8 @@ type ExecutorMap = {
   [NodeType.GEMINI_EXECUTION]: typeof geminiExecutionExecutor;
   [NodeType.CHATGPT_EXECUTION]: typeof chatGptExecutionExecutor; 
   [NodeType.CLAUDE_EXECUTION]: typeof geminiExecutionExecutor;  // To Do: Fix
+  [NodeType.DISCORD_EXECUTION]: typeof discordExecutionExecutor;  // To Do: Fix
+  [NodeType.SLACK_EXECUTION]: typeof discordExecutionExecutor;  // To Do: Fix
 };
 
 export const executorRegistry: ExecutorMap = { 
@@ -28,6 +31,8 @@ export const executorRegistry: ExecutorMap = {
   [NodeType.GEMINI_EXECUTION]: geminiExecutionExecutor,
   [NodeType.CHATGPT_EXECUTION]: chatGptExecutionExecutor, 
   [NodeType.CLAUDE_EXECUTION]: geminiExecutionExecutor,  // To Do: Fix
+  [NodeType.DISCORD_EXECUTION]: discordExecutionExecutor,  // To Do: Fix
+  [NodeType.SLACK_EXECUTION]: discordExecutionExecutor,  // To Do: Fix
 };
 
 export const getExecutor = <T extends NodeType>(type: T): ExecutorMap[T] => { 

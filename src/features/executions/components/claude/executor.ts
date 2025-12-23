@@ -19,7 +19,7 @@ Handlebars.registerHelper('json', (context) => {
 });
 
 type ClaudeExecutionData = { 
-  variableName?: string;
+  variableNodeName?: string;
   credentialId?: string;
   systemPrompt?: string;
   userPrompt: string;
@@ -40,14 +40,14 @@ export const claudeExecutionExecutor: NodeExecutor<ClaudeExecutionData> = async(
     }),
   );
 
-  if (!data.variableName) { 
+  if (!data.variableNodeName) { 
     await publish( 
       claudeExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
     );
-    throw new NonRetriableError("Claude AI Execution node: Variable Name is required");
+    throw new NonRetriableError("Claude AI Execution node: Variable Node Name is required");
   }
 
   const credential = await step.run('get-credential', () => { 
@@ -130,7 +130,7 @@ export const claudeExecutionExecutor: NodeExecutor<ClaudeExecutionData> = async(
 
     return { 
       ...context,
-      [data.variableName]: { 
+      [data.variableNodeName]: { 
         text,
       },
     }
