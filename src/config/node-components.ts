@@ -11,6 +11,7 @@ import { GeminiExecutionNode } from '@/features/executions/components/gemini/nod
 import { ChatGptExecutionNode } from '@/features/executions/components/chatgpt/node';
 import { ClaudeExecutionNode } from '@/features/executions/components/claude/node';
 import { DiscordExecutionNode } from '@/features/executions/components/discord/node';
+import { SlackExecutionNode } from '@/features/executions/components/slack/node';
 
 
 export const nodeComponents = { 
@@ -23,6 +24,7 @@ export const nodeComponents = {
   [NodeType.CHATGPT_EXECUTION]: ChatGptExecutionNode,  // aka .OPENAI]: OpenAiNode
   [NodeType.CLAUDE_EXECUTION]: ClaudeExecutionNode,  // aka .ANTHROPIC]: AnthropicNode
   [NodeType.DISCORD_EXECUTION]: DiscordExecutionNode,  // aka .DISCORD]: DiscordNode
+  [NodeType.SLACK_EXECUTION]: SlackExecutionNode,  // aka .SLACK]: SlackNode
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof nodeComponents;

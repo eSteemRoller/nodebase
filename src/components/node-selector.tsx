@@ -81,6 +81,12 @@ const executionNodes: NodeTypeOption[] = [
     description: "Post a message on a Discord server",
     icon: '/logos/discord.svg',
   },
+  {
+    type: NodeType.SLACK_EXECUTION,  // aka SLACK
+    label: "Slack",
+    description: "Post a message on a Slack server",
+    icon: '/logos/slack.svg',
+  },
 ];
 
 interface NodeSelectorProps { 
