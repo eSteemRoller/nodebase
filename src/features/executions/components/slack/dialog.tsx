@@ -36,7 +36,7 @@ const formSchema = z.object({
     }),
   content: z
     .string()
-    .min(1, "Message content is required"),
+    .min(1, "Post content is required"),
   webhookUrl: z
     .string()
     .min(1, "Webhook URL is required")
@@ -135,13 +135,13 @@ export const SlackExecutionDialog = ({
                   <FormLabel>Webhook URL</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="https://Slack.com/api/webhooks/..."
+                      placeholder="https://slack.com/api/webhooks/..."
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    URL created at Slack: Edit Channel →
-                      Integrations → Create Webhook → Copy Webhook URL
+                    URL created at Slack: Workspace Settings →
+                      Workflows → Webhooks → Create Webhook? → Copy Webhook URL?
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -161,27 +161,9 @@ export const SlackExecutionDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    The message and/or text in your post.
+                    The content and/or text in your post.
                     Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
                       &nbsp;to stringify objects.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField 
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Bot Username (Optional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Your Workflow Bot's Name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    This will override the webhook's default username
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

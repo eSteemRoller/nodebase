@@ -167,7 +167,7 @@ export const DiscordExecutionDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    The message and/or text in your post.
+                    The content and/or text in your post.
                     Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
                       &nbsp;to stringify objects.
                   </FormDescription>

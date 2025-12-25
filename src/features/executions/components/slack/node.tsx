@@ -4,7 +4,7 @@
 import { useReactFlow, type Node, type NodeProps } from '@xyflow/react';
 import { memo, useState } from 'react';
 import { BaseExecutionNode } from '@/features/executions/components/base-execution-node';
-import { DiscordExecutionFormValues, DiscordExecutionDialog } from './dialog';
+import { SlackExecutionFormValues, SlackExecutionDialog } from './dialog';
 import { useNodeStatus } from '../../hooks/use-node-status';
 import { fetchDiscordExecutionRealtimeToken } from './actions';
 import { DISCORD_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/discord';
@@ -32,7 +32,7 @@ export const SlackExecutionNode = memo(
 
   const handleOpenSettings = () => setDialogOpen(true);
 
-  const handleSubmit = (values: DiscordExecutionFormValues) => { 
+  const handleSubmit = (values: SlackExecutionFormValues) => { 
     setNodes((nodes) => nodes.map((node) => { 
       if (node.id == props.id) { 
         return { 
@@ -55,7 +55,7 @@ export const SlackExecutionNode = memo(
 
   return ( 
     <>
-      <DiscordExecutionDialog 
+      <SlackExecutionDialog 
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
