@@ -2,18 +2,18 @@
 'use server';
 
 import { getSubscriptionToken, type Realtime } from "@inngest/realtime";
-import { discordExecutionChannel } from "@/inngest/channels/discord";
+import { slackExecutionChannel } from "@/inngest/channels/slack-execution";
 import { inngest } from "@/inngest/client";
 
 
-export type DiscordExecutionToken = Realtime.Token< 
-  typeof discordExecutionChannel, 
+export type SlackExecutionToken = Realtime.Token< 
+  typeof slackExecutionChannel, 
   ['status']
 >;
 
-export async function fetchDiscordExecutionRealtimeToken():Promise<DiscordExecutionToken> { 
+export async function fetchSlackExecutionRealtimeToken():Promise<SlackExecutionToken> { 
   const token = await getSubscriptionToken(inngest, { 
-    channel: discordExecutionChannel(),
+    channel: slackExecutionChannel(),
     topics: ['status'],
   });
 

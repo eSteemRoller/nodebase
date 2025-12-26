@@ -7,6 +7,7 @@ import { stripeTriggerExecutor } from '@/features/triggers/components/stripe-tri
 import { geminiExecutionExecutor } from '../components/gemini/executor';
 import { chatGptExecutionExecutor } from '../components/chatgpt/executor';
 import { discordExecutionExecutor } from '../components/discord/executor';
+import { slackExecutionExecutor } from '../components/slack/executor';
 
 
 type ExecutorMap = {
@@ -17,9 +18,9 @@ type ExecutorMap = {
   [NodeType.STRIPE_TRIGGER]: typeof stripeTriggerExecutor;
   [NodeType.GEMINI_EXECUTION]: typeof geminiExecutionExecutor;
   [NodeType.CHATGPT_EXECUTION]: typeof chatGptExecutionExecutor; 
-  [NodeType.CLAUDE_EXECUTION]: typeof geminiExecutionExecutor;  // To Do: Fix
-  [NodeType.DISCORD_EXECUTION]: typeof discordExecutionExecutor;  // To Do: Fix
-  [NodeType.SLACK_EXECUTION]: typeof discordExecutionExecutor;  // To Do: Fix
+  [NodeType.CLAUDE_EXECUTION]: typeof geminiExecutionExecutor;  
+  [NodeType.DISCORD_EXECUTION]: typeof discordExecutionExecutor;  
+  [NodeType.SLACK_EXECUTION]: typeof slackExecutionExecutor;  
 };
 
 export const executorRegistry: ExecutorMap = { 
@@ -30,9 +31,9 @@ export const executorRegistry: ExecutorMap = {
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
   [NodeType.GEMINI_EXECUTION]: geminiExecutionExecutor,
   [NodeType.CHATGPT_EXECUTION]: chatGptExecutionExecutor, 
-  [NodeType.CLAUDE_EXECUTION]: geminiExecutionExecutor,  // To Do: Fix
-  [NodeType.DISCORD_EXECUTION]: discordExecutionExecutor,  // To Do: Fix
-  [NodeType.SLACK_EXECUTION]: discordExecutionExecutor,  // To Do: Fix
+  [NodeType.CLAUDE_EXECUTION]: geminiExecutionExecutor,  
+  [NodeType.DISCORD_EXECUTION]: discordExecutionExecutor,  
+  [NodeType.SLACK_EXECUTION]: slackExecutionExecutor,  
 };
 
 export const getExecutor = <T extends NodeType>(type: T): ExecutorMap[T] => { 

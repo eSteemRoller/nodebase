@@ -119,7 +119,7 @@ export const SlackExecutionDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    <p>You can use a unique Variable Node Name dynamically to reference this node in other nodes.</p>
+                    <p>You can use a unique Variable Node Name dynamically with {"{}"} to insert this node's data into other nodes.</p>
                     <p>Example: </p> 
                     <p>{`{{${watchVariableNodeName}.text}}`}</p> {/* To Do: what's the Inngest output? */}
                   </FormDescription>
@@ -140,8 +140,9 @@ export const SlackExecutionDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    URL created at Slack: Workspace Settings →
-                      Workflows → Webhooks → Create Webhook? → Copy Webhook URL?
+                    URL created at Slack: More → Tools → Workflows → Webhooks 
+                      → Create Webhook? → Copy Webhook URL?
+                      {/* To do: Correct this */}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -162,8 +163,20 @@ export const SlackExecutionDialog = ({
                   </FormControl>
                   <FormDescription>
                     The content and/or text in your post.
-                    Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
+                  </FormDescription>
+                  <FormDescription>
+                    Note: Variables {"({} 'variable_name')"} allow you to share dynamic data from node to node.
+                      &nbsp;Use {"{} 'variable name'"} for individual values or a {"{} 'json_variable_name'"} 
                       &nbsp;to stringify objects.
+                  </FormDescription>
+                  <FormDescription> 
+                    Important note: Unless you're sure otherwise, make sure 
+                      the Slack webhook "Data Variable" at least contains a variable 
+                      with the "Key" as "content" {"({} content)"}.
+                  </FormDescription>
+                  <FormDescription> 
+                    More dynamic features to be added in the future. 
+                    {/* To do: Add a button offering detailed scrollable Slack instructions */}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

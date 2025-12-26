@@ -14,6 +14,7 @@ import { geminiExecutionChannel } from './channels/gemini';
 import { chatGptExecutionChannel } from './channels/chatgpt';
 import { claudeExecutionChannel } from './channels/claude';
 import { discordExecutionChannel } from './channels/discord';
+import { slackExecutionChannel } from './channels/slack-execution';
 
 
 export const executeWorkflow = inngest.createFunction(
@@ -32,6 +33,7 @@ export const executeWorkflow = inngest.createFunction(
       chatGptExecutionChannel(),
       claudeExecutionChannel(),
       discordExecutionChannel(),
+      slackExecutionChannel(),
     ]
   },
   async ({ event, step, publish }) => { 

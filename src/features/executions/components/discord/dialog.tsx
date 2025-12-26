@@ -168,7 +168,8 @@ export const DiscordExecutionDialog = ({
                   </FormControl>
                   <FormDescription>
                     The content and/or text in your post.
-                    Use {"{{variables}}"} for simple values or a {"{{json variable}}"} 
+                    Variables {"({} 'variable name')"} allow you to share dynamic data from node to node.
+                    Use {"{} 'variable name'"} for individual values or a {"{} 'json variable'"} 
                       &nbsp;to stringify objects.
                   </FormDescription>
                   <FormMessage />

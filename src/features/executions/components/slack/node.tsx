@@ -6,8 +6,8 @@ import { memo, useState } from 'react';
 import { BaseExecutionNode } from '@/features/executions/components/base-execution-node';
 import { SlackExecutionFormValues, SlackExecutionDialog } from './dialog';
 import { useNodeStatus } from '../../hooks/use-node-status';
-import { fetchDiscordExecutionRealtimeToken } from './actions';
-import { DISCORD_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/discord';
+import { fetchSlackExecutionRealtimeToken } from './actions';
+import { SLACK_EXECUTION_CHANNEL_NAME } from '@/inngest/channels/slack-execution';
 
 
 type SlackExecutionNodeData = { 
@@ -25,9 +25,9 @@ export const SlackExecutionNode = memo(
 
   const nodeStatus = useNodeStatus({ 
     nodeId: props.id,
-    channel: DISCORD_EXECUTION_CHANNEL_NAME,
+    channel: SLACK_EXECUTION_CHANNEL_NAME,
     topic: 'status',
-    refreshToken: fetchDiscordExecutionRealtimeToken,
+    refreshToken: fetchSlackExecutionRealtimeToken,
   });
 
   const handleOpenSettings = () => setDialogOpen(true);

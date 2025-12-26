@@ -3,7 +3,7 @@ import type { NodeExecutor } from '@/features/executions/types';
 import { NonRetriableError } from 'inngest';
 import Handlebars from 'handlebars';
 import { decode } from 'html-entities';
-import { discordExecutionChannel } from '@/inngest/channels/discord';
+import { slackExecutionChannel } from '@/inngest/channels/slack-execution';
 import ky from 'ky';
 
 
@@ -17,14 +17,13 @@ Handlebars.registerHelper('json', (context) => {
   }
 });
 
-type DiscordExecutionData = { 
+type SlackExecutionData = { 
   variableNodeName?: string;
   webhookUrl?: string;
   content?: string;
-  username?: string;
 };
 
-export const discordExecutionExecutor: NodeExecutor<DiscordExecutionData> = async({ 
+export const slackExecutionExecutor: NodeExecutor<SlackExecutionData> = async({ 
   // userId,
   data,
   nodeId,
@@ -33,7 +32,7 @@ export const discordExecutionExecutor: NodeExecutor<DiscordExecutionData> = asyn
   publish,
 }) => { 
   await publish( 
-    discordExecutionChannel().status({ 
+    slackExecutionChannel().status({ 
       nodeId,
       status: 'loading',
     }),
@@ -41,59 +40,55 @@ export const discordExecutionExecutor: NodeExecutor<DiscordExecutionData> = asyn
 
   if (!data.content) { 
     await publish( 
-      discordExecutionChannel().status({ 
+      slackExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
     );
-    throw new NonRetriableError("Discord Execution node: post content not found");
+    throw new NonRetriableError("Slack Execution node: post content not found");
   };
 
   const rawContent = Handlebars.compile(data.content)(context);
   const content = decode(rawContent);
-  const username = data.username
-    ? decode(Handlebars.compile(data.username)(context))
-    : undefined;
 
   try { 
-    const result = await step.run('discord-webhook', async () => { 
+    const result = await step.run('slack-webhook', async () => { 
       if (!data.webhookUrl) { 
         await publish( 
-          discordExecutionChannel().status({ 
+          slackExecutionChannel().status({ 
             nodeId,
             status: 'error',
           }),
         );
-        throw new NonRetriableError("Discord Execution node: webook URL not found");
+        throw new NonRetriableError("Slack Execution node: webook URL not found");
       };
 
-      await ky.post(data.webhookUrl!, { 
+      await ky.post(data.webhookUrl, { 
         json: { 
-          content: content.slice(0, 2000),  // Discord's post character max
-          username,
-        }
+          content: content,  // The prop name depends on the Workflow "Key" prop name in Slack (BTW, Discord's default prop name is "content")
+        },
       });
 
       if (!data.variableNodeName) { 
         await publish( 
-          discordExecutionChannel().status({ 
+          slackExecutionChannel().status({ 
             nodeId,
             status: 'error',
           }),
         );
-        throw new NonRetriableError("Discord Execution node: Variable Node Name not found");
+        throw new NonRetriableError("Slack Execution node: Variable Node Name not found");
       };
 
       return { 
         ...context,
         [data.variableNodeName]: { 
-          discordMessageSent: true,  // or: messageContent: content.slice(0, 2000),
+          slackMessageSent: true,  // or: messageContent: content.slice(0, 2000),
         },
       };
     });
     
     await publish( 
-      discordExecutionChannel().status({ 
+      slackExecutionChannel().status({ 
         nodeId,
         status: 'success',
       }),
@@ -102,7 +97,7 @@ export const discordExecutionExecutor: NodeExecutor<DiscordExecutionData> = asyn
     return result;
   } catch (error) {
     await publish( 
-      discordExecutionChannel().status({ 
+      slackExecutionChannel().status({ 
         nodeId,
         status: 'error',
       }),
