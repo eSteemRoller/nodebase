@@ -119,7 +119,7 @@ export const SlackExecutionDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    <p>You can use a unique Variable Node Name dynamically with {"{}"} to insert this node's data into other nodes.</p>
+                    <p>You can use a unique Variable Node Name dynamically with {"{}"} to share this node's data into other nodes.</p>
                     <p>Example: </p> 
                     <p>{`{{${watchVariableNodeName}.text}}`}</p> {/* To Do: what's the Inngest output? */}
                   </FormDescription>

@@ -105,6 +105,7 @@ model Workflow {
   // ReactFlow begin:
   nodes       Node[]
   connections Connection[]
+  executions  Execution[]
   // ReactFlow end
 
   userId String
@@ -137,7 +138,7 @@ model Node {
 
   credentialId String?
   credential   Credential? @relation(fields: [credentialId], references: [id])
-  // OnDelete: NoAction or SetNull? to prevent node deletion with credential deletion
+  // Check: "onDelete: " enter NoAction? or SetNull? to prevent node deletion with credential deletion?
 
   outputConnections Connection[] @relation("FromNode")
   inputConnections  Connection[] @relation("ToNode")
@@ -165,4 +166,29 @@ model Connection {
   @@unique([fromNodeId, toNodeId, fromOutput, toInput])
 }
 
-// ReactFlow end
+// ReactFlow end?
+
+enum ExecutionStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+model Execution {
+  id String @id @default(cuid())
+
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  // "onDelete: Cascade" = when node is deleted, also delete that node's execution history
+
+  status     ExecutionStatus @default(RUNNING)
+  error      String?         @db.Text
+  errorStack String?         @db.Text
+
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  inngestEventId String @unique
+
+  output Json?
+}
