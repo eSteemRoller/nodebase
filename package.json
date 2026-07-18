@@ -96,6 +96,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/toposort": "^2.0.7",
+    "baseline-browser-mapping": "^2.10.43",
     "dotenv-cli": "^11.0.0",
     "inngest-cli": "^1.12.1",
     "mprocs": "^0.7.3",
