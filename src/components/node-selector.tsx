@@ -64,6 +64,12 @@ const executionNodes: NodeTypeOption[] = [
     icon: GlobeIcon,
   },
   { 
+    type: NodeType.HTTP_REQUEST_EXECUTION,
+    label: "HTTP Request",
+    description: "Makes an HTTP request",
+    icon: GlobeIcon,
+  },
+  { 
     type: NodeType.GEMINI_EXECUTION,  // aka GEMINI
     label: "Gemini AI",
     description: "Prompts Google Gemini AI to answer questions",
