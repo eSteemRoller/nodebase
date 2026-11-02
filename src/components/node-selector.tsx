@@ -88,6 +88,12 @@ const executionNodes: NodeTypeOption[] = [
     icon: '/logos/gemini.svg',
   },
   { 
+    type: NodeType.GEMINI_EXECUTION,  // aka GEMINI
+    label: "Gemini AI",
+    description: "Prompts Google Gemini AI to answer questions",
+    icon: '/logos/gemini.svg',
+  },
+  { 
     type: NodeType.CHATGPT_EXECUTION,  // aka OPENAI
     label: "ChatGPT AI",
     description: "Prompts OpenAI ChatGPT AI to answer questions",
