@@ -81,6 +81,12 @@ const executionNodes: NodeTypeOption[] = [
     description: "Prompts OpenAI ChatGPT AI to answer questions",
     icon: '/logos/chatgpt.svg',
   },
+  { 
+    type: NodeType.CHATGPT_EXECUTION,  // aka OPENAI
+    label: "ChatGPT AI",
+    description: "Prompts OpenAI ChatGPT AI to answer questions",
+    icon: '/logos/chatgpt.svg',
+  },
   {
     type: NodeType.CLAUDE_EXECUTION,  // aka ANTHROPIC
     label: "Claude AI",
