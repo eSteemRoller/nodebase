@@ -94,6 +94,12 @@ const executionNodes: NodeTypeOption[] = [
     icon: '/logos/claude.svg',
   },
   {
+    type: NodeType.CLAUDE_EXECUTION,  // aka ANTHROPIC
+    label: "Claude AI",
+    description: "Prompts OpenAI Claude AI to answer questions",
+    icon: '/logos/claude.svg',
+  },
+  {
     type: NodeType.DISCORD_EXECUTION,  // aka DISCORD
     label: "Discord",
     description: "Post a message on a Discord server",
